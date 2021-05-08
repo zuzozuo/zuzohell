@@ -1,21 +1,12 @@
 
 import pygame
+from CONSTS import *
 import sys
 sys.path.append('classes')
 from pygame.locals import *
 import util as game_util
 from player import Player
 
-
-#------CONSTS-------------------------
-WINDOW_HEIGHT = 640
-WINDOW_WIDTH = 480
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-YELLOW = (255, 255, 0)
-BLUE = (0, 0, 255)
-WHITE = (255, 255, 255)
-FPS = 60
 #------------------------------------
 score = 0 
 
@@ -49,9 +40,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        player.move()
-
+    player.move()  
     player.update_position()
+    player.check_border()
     
     player.display(screen, RED)    
     pygame.display.update()

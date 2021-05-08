@@ -4,7 +4,6 @@ class Entity:
         self.x = x
         self.y = y
 
-        self.position = pygame.Vector2(x,y)
         self.velocity = pygame.Vector2(0, 0)
         self.acceleration = pygame.Vector2()
 
@@ -18,9 +17,6 @@ class Entity:
         pass
 
     def update(): #update done on every object
-        pass
-
-    def check_border(): #check border behaviour
         pass
 
     def cooldown(): #any entity cooldown
