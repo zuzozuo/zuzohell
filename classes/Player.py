@@ -4,7 +4,6 @@ from CONSTS import *
 class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y)
-
         self.radius = 30
         self.hp = 0
         self.speed = 3
@@ -37,22 +36,21 @@ class Player(Entity):
 
     #check border behaviour
     def check_border(self):
+        #LEFT
+        if (self.x < self.radius + MAP_OFFSET):
+            self.x = self.radius + MAP_OFFSET
+        
+        #RIGHT
+        if (self.x > MAP_WIDTH - self.radius + MAP_OFFSET):
+            self.x = MAP_WIDTH  - self.radius + MAP_OFFSET
 
-        if (self.x < self.radius):
-            self.x = self.radius
-            print("Poza ekramnemn LEFT")
+        #UP
+        if (self.y < self.radius + MAP_OFFSET):
+            self.y = self.radius + MAP_OFFSET
 
-        if (self.x > WINDOW_WIDTH - self.radius):
-            self.x = WINDOW_WIDTH  - self.radius
-            print("Poza ekramnemn RIGHT")
-
-        if (self.y < self.radius):
-            self.y = self.radius
-            print("Poza ekramnemn UP")
-
-        if (self.y > WINDOW_HEIGHT - self.radius):
-            self.y = WINDOW_HEIGHT - self.radius
-            print("Poza ekramnemn DOWN")
+        #DOWN
+        if (self.y > MAP_HEIGHT - self.radius + MAP_OFFSET):
+            self.y = MAP_HEIGHT - self.radius + MAP_OFFSET
 
     #HANDLING EVENTS
     def shoot():

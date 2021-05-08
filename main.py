@@ -19,19 +19,23 @@ input_keys = []
 #-------------Init-------------------
 pygame.init()
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+WINDOW_SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+MAP_SCREEN = pygame.Surface((MAP_WIDTH , MAP_HEIGHT))
+#play_screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Zuzohell") 
 icon = pygame.image.load('img/411.png')
 pygame.display.set_icon(icon)
 #spawn player
-player = Player(WINDOW_WIDTH/2, WINDOW_HEIGHT * 0.9)
+player = Player((MAP_WIDTH + MAP_OFFSET)/2 , (MAP_WIDTH + MAP_OFFSET) * 0.98)
 #------------Game Loop-----------------
 running = True
 
 while running:
     clock.tick(FPS)
-    screen.fill(WHITE)
-
+    MAP_SCREEN.fill(WHITE)
+    WINDOW_SCREEN.fill(BLACK)
+    WINDOW_SCREEN.blit(MAP_SCREEN,(MAP_OFFSET, MAP_OFFSET))
     input_keys = []
 
     #EVENT HANDLING
@@ -44,7 +48,7 @@ while running:
     player.update_position()
     player.check_border()
     
-    player.display(screen, RED)    
+    player.display(WINDOW_SCREEN, RED)    
     pygame.display.update()
 
 
