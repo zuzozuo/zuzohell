@@ -4,5 +4,7 @@ def init_game():
 def reset_game():
     pass
 
-def loop_over():
+def loop_over(objects):
+    for object in objects:
+        object.update()
     pass

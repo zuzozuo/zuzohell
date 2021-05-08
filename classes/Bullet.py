@@ -1,5 +1,6 @@
+from entity import Entity
 class Bullet(Entity):
-    def ___init___(self, x, y):
+    def __init__(self, x, y):
         super.__init__(x,y)
         self.radius = 0
         self.hp = 0

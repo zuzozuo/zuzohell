@@ -1,16 +1,18 @@
+import pygame
 class Entity:
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
-        self.position = 0
-        self.velocity = 0
-        self.radius = 0
+        self.position = pygame.Vector2(x,y)
+        self.velocity = pygame.Vector2(0, 0)
+        self.acceleration = pygame.Vector2()
 
         self.m_bottom = 0
         self.m_top = 0
         self.m_left = 0
         self.m_right = 0
+
 
     def init(): # any entity init
         pass
@@ -24,7 +26,7 @@ class Entity:
     def cooldown(): #any entity cooldown
         pass
 
-    def display(): #any entity display
+    def display(self, surface, color): #any entity display
         pass
     
     #handling events
@@ -36,3 +38,7 @@ class Entity:
 
     def collision():
         pass
+
+    def update_position(self):
+        self.x +=self.velocity.x
+        self.y += self.velocity.y 
