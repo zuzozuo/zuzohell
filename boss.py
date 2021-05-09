@@ -1,28 +1,30 @@
 from entity import Entity
+
+
 class Boss(Entity):
     def __init__(self, x, y):
-        super.__init__(x,y)
+        super.__init__(x, y)
         self.radius = 0
         self.hp = 0
         self.speed = 0
         self.weapon = 0
 
-    def update():
+    def update(self):
         pass
 
-    #HANDLING EVENTS
+    # HANDLING EVENTS
 
-    def shoot():
+    def shoot(self):
         pass
 
-    def death():
+    def death(self):
         pass
 
-    def display():
-        pass
-    
-    def cooldown():
+    def display(self):
         pass
 
-    def collision():
+    def cooldown(self):
+        pass
+
+    def collision(self):
         pass

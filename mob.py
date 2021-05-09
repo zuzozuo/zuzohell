@@ -8,24 +8,24 @@ class Mob(Entity):
         self.weapon = 0
     
 
-    def update():
+    def update(self):
         pass
     #HANDLING EVENTS
 
-    def shoot():
+    def shoot(self):
         pass
 
-    def death():
+    def death(self):
         pass
 
-    def display():
+    def display(self):
         pass
     
-    def cooldown():
+    def cooldown(self):
         pass
 
 
-    def collision():
+    def collision(self):
         pass
 
 
