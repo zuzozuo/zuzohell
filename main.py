@@ -4,7 +4,7 @@ import pygame
 from CONSTS import *
 from player import Player
 from entities import bullets
-from util import loop_over
+from util import loop_over, add_bullets
 # ------------------------------------
 score = 0
 
@@ -34,6 +34,12 @@ while running:
             running = False
 
     #loop_over(bullets)
+    if player.spawn_bullet == True:
+        add_bullets(player.x, player.y, 0, MAP_SCREEN)
+        player.spawn_bullet = False
+    
+    loop_over(bullets, MAP_SCREEN)
+    
     player.move()
     player.update_position()
     player.check_border()

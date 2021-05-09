@@ -13,6 +13,8 @@ class Entity:
         self.m_left = 0
         self.m_right = 0
 
+        self.spawn_bullet = False
+
     def init(self):  # any entity init
         pass
 
@@ -38,8 +40,7 @@ class Entity:
 
     def attack(self, is_player):
         if (is_player):
-            #add_bullets(self.x, self.y, 0, is_player, surface)
-
+            self.spawn_bullet = True
             print("He atacc")
 
     def update_position(self):
