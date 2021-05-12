@@ -3,8 +3,9 @@ WINDOW_WIDTH = 1008
 
 MAP_HEIGHT = 720
 MAP_WIDTH = 672
-
 MAP_OFFSET = 24
+
+WORLD_CEILING =  -30
 
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -13,4 +14,19 @@ BLUE = (0, 0, 255)
 WHITE = (255, 255, 255)
 FPS = 60
 
-BASIC_BULLET_SPEED = 1.1
+BASIC_BULLET_SPEED = 3.5
+SLOWDOWN = 0.2
+
+#later it will depend on difficulty level
+SPAWN_TIME_MIN =  20
+SPAWN_TIME_MAX = 100
+
+SPEED_MIN = 0.5
+SPEED_MAX = 3
+
+#types of objects
+
+TYPE_PLAYER = 1
+TYPE_MOB = 2
+TYPE_BULLET = 3
+TYPE_BOSS = 4

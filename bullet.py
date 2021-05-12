@@ -14,11 +14,9 @@ class Bullet(Entity):
         self.is_dead = False
         self.velocity = pygame.Vector2(0,-4) #toedit
 
-    def spawn_bullet(self):
-        self.y = self.y + 10  # liczba taka losowa o narazie
-
     def display(self, surface):
         pygame.draw.rect(surface, BLUE, pygame.Rect(self.x, self.y , self.radius , self.radius ))
+
 
     # HANDLING EVENTS
     def death(self):

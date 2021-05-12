@@ -1,4 +1,5 @@
 import pygame
+from CONSTS import *
 
 class Entity:
     def __init__(self, x, y):
@@ -14,6 +15,7 @@ class Entity:
         self.m_right = 0
 
         self.spawn_bullet = False
+        self.last_update = pygame.time.get_ticks()
 
     def init(self):  # any entity init
         pass
@@ -38,9 +40,15 @@ class Entity:
     def collision(self):
         pass
 
+    def check_border(self): #any entity border checkin
+        pass
+
     def attack(self, is_player):
         if (is_player):
-            self.spawn_bullet = True
+            now = pygame.time.get_ticks()  #spawn delay
+            if(now - self.last_update > 60):
+                self.last_update = now
+                self.spawn_bullet = True
             print("He atacc")
 
     def update_position(self):

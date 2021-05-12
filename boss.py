@@ -1,5 +1,5 @@
 from entity import Entity
-
+from CONSTS import *
 
 class Boss(Entity):
     def __init__(self, x, y):

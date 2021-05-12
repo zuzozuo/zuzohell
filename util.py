@@ -1,13 +1,20 @@
 from entities import *
 from bullet import Bullet
+from mob import Mob
+from CONSTS import *
+import random
 
-
-def init_game(self):
+def init_game():
     pass
 
 
-def reset_game(self):
+def reset_game():
     pass
+
+def add_mob():
+    mob = Mob(random.randint(0,MAP_WIDTH), WORLD_CEILING)
+    mob.init()
+    mobs.append(mob)
 
 
 def add_bullets(x, y, angle, surface):
