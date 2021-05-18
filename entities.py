@@ -2,3 +2,4 @@
 boss = []
 mobs = []
 bullets = []
+mob_bullets = []

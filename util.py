@@ -3,6 +3,7 @@ from bullet import Bullet
 from mob import Mob
 from CONSTS import *
 import random
+import pygame
 
 def init_game():
     pass
@@ -16,15 +17,19 @@ def add_mob():
     mob.init()
     mobs.append(mob)
 
-
 def add_bullets(x, y, angle, surface):
     bullet = Bullet(x, y)
     bullets.append(bullet)
+
+def add_mob_bullets(x,y,angle, surface):
+    bullet = Bullet(x, y)
+    bullet.velocity = pygame.Vector2(0, BASIC_BULLET_SPEED)
+    mob_bullets.append(bullet)
 
 
 def loop_over(objects, surface):
     for ent in objects:
         ent.update()
-        ent.display(surface)
         if ent.is_dead:
             objects.remove(ent)
+        ent.display(surface)

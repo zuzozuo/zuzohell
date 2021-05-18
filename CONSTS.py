@@ -14,15 +14,15 @@ BLUE = (0, 0, 255)
 WHITE = (255, 255, 255)
 FPS = 60
 
-BASIC_BULLET_SPEED = 3.5
+BASIC_BULLET_SPEED = 2.5
 SLOWDOWN = 0.2
 
 #later it will depend on difficulty level
 SPAWN_TIME_MIN =  20
 SPAWN_TIME_MAX = 100
 
-SPEED_MIN = 0.5
-SPEED_MAX = 3
+SPEED_MIN = 0.7
+SPEED_MAX = 1.5
 
 #types of objects
 

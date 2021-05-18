@@ -13,6 +13,7 @@ class Player(Entity):
         self.fire = False
         self.x = x
         self.y = y
+        self.is_player = True
 
     def bonus(self):  # gain bonus after collecting items
         pass
@@ -27,7 +28,7 @@ class Player(Entity):
         keystate = pygame.key.get_pressed()
 
         if keystate[pygame.K_SPACE]:
-            self.shoot(True)
+            self.attack()
 
         if keystate[pygame.K_LEFT]:
             self.velocity.x = -self.speed
@@ -58,18 +59,16 @@ class Player(Entity):
 
             # HANDLING EVENTS
 
-    def shoot(self, is_player):
-        self.attack(is_player)
-
-    def death(self):
-        pass
-
     def display(self, surface):
-        pygame.draw.rect(surface, RED,
-                         pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2))
-
+        #pygame.draw.rect(surface, RED,
+        #                 pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2))
+        pygame.draw.circle(surface, RED, (self.x, self.y) , self.radius, 0)
     def cooldown(self):
         pass
 
-    def collision(self):
-        pass
+    def attack(self):
+        now = pygame.time.get_ticks()  #bullet spawn delay
+        if(now - self.last_update > 70):
+            self.last_update = now
+            self.spawn_bullet = True
+
