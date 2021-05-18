@@ -15,6 +15,11 @@ class Player(Entity):
         self.y = y
         self.is_player = True
 
+        self.image = pygame.transform.scale(PLAYER_IMAGE.convert(), (2 * self.radius, 2 * self.radius))
+        self.transColor = PLAYER_IMAGE.get_at((0,0))
+        self.image.set_colorkey(self.transColor)
+    
+
     def bonus(self):  # gain bonus after collecting items
         pass
 
@@ -62,7 +67,10 @@ class Player(Entity):
     def display(self, surface):
         #pygame.draw.rect(surface, RED,
         #                 pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2))
-        pygame.draw.circle(surface, RED, (self.x, self.y) , self.radius, 0)
+        #pygame.draw.circle(surface, RED, (self.x, self.y) , self.radius, 0)
+        pygame.draw.circle(surface, YELLOW, (self.x, self.y) , self.radius, 0)
+        MAP_SCREEN.blit(self.image, (self.x-self.radius, self.y-self.radius))
+
     def cooldown(self):
         pass
 

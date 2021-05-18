@@ -2,16 +2,20 @@ from entity import Entity
 import random
 import pygame
 from CONSTS import *
-class Mob(Entity):
+class Mob(Entity, pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__(x,y)
-        self.radius = 15
+        self.radius = 30
         self.hp = 0
         self.speed = 0
         self.weapon = 0
         self.type = 'Mob'
         self.can_attack = True
         self.bullet_break = pygame.time.get_ticks()
+
+        self.image = pygame.transform.scale(MOB_IMAGE.convert(), (2 * self.radius, 2 * self.radius))
+        self.transColor = MOB_IMAGE.get_at((0,0))
+        self.image.set_colorkey(self.transColor)
     
 
     def init(self):
@@ -23,13 +27,16 @@ class Mob(Entity):
         super().update()
         self.attack()
 
-    def display(self, surface):        
+    def display(self, surface):
+        #pygame.draw.rect(self.image, YELLOW, pygame.Rect(self.x/2, self.y/2, 60, 60))   
+        #self.rect = self.image.get_rect()     
         pygame.draw.circle(surface, YELLOW, (self.x, self.y) , self.radius, 0)
+        MAP_SCREEN.blit(self.image, (self.x-self.radius, self.y-self.radius))
     #HANDLING EVENTS
 
     def attack(self):
         now = pygame.time.get_ticks()  #spawn delay
-        if(now - self.last_update > 100):
+        if(now - self.last_update > 200):
             self.last_update = now
             self.spawn_bullet = True
     

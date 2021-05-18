@@ -21,9 +21,11 @@ def add_bullets(x, y, angle, surface):
     bullet = Bullet(x, y)
     bullets.append(bullet)
 
-def add_mob_bullets(x,y,angle, surface):
+def add_mob_bullets(x,y, angle, surface):
+    angle = random.random() - 0.5
     bullet = Bullet(x, y)
-    bullet.velocity = pygame.Vector2(0, BASIC_BULLET_SPEED)
+    bullet.velocity = pygame.Vector2(0, BASIC_BULLET_SPEED).rotate_rad(angle)
+    bullet.color = IDK_COLOR
     mob_bullets.append(bullet)
 
 

@@ -4,16 +4,14 @@ import pygame
 from CONSTS import *
 from player import Player
 from entities import bullets
-from util import *
+from helpers import *
 # ------------------------------------
 score = 0
-mobs_to_spawn = 10 #TO DO, number of mobs for each level
-mob_bullets_to_spawn = 5
+mobs_to_spawn = 5 #TO DO, number of mobs for each level
+#mob_bullets_to_spawn = 5
 # -------------Init-------------------
 pygame.init()
 clock = pygame.time.Clock()
-
-MAP_SCREEN = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
 
 pygame.display.set_caption("Zuzohell")
 icon = pygame.image.load('img/411.png')
@@ -47,7 +45,7 @@ while running:
             continue
 
         mobs[i].cooldown()
-        
+
         if(mobs[i].can_attack == True):
             mobs[i].attack()
 
@@ -84,8 +82,8 @@ while running:
     player.check_border()
 
     player.display(MAP_SCREEN)
-
     pygame.display.update()
+    pygame.display.flip()
 
 # -----------------------------------------
 pygame.quit()
