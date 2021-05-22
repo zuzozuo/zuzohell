@@ -26,16 +26,15 @@ SPAWN_TIME_MAX = 100
 SPEED_MIN = 0.3
 SPEED_MAX = 1
 
-#types of objects
-
-TYPE_PLAYER = 1
-TYPE_MOB = 2
-TYPE_BULLET = 3
-TYPE_BOSS = 4
-
 #IMAGES
 
 PLAYER_IMAGE = pygame.image.load('img/player.png')
 MOB_IMAGE = pygame.image.load('img/mob5.png')
 
 MAP_SCREEN = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
+
+#GAME STATES
+
+GAME_START = 1
+GAME_PLAYING = 2
+GAME_OVER = 3

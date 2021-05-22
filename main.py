@@ -7,9 +7,9 @@ from player import Player
 from entities import bullets
 from helpers import *
 # ------------------------------------
-score = 0
 mobs_to_spawn = 5 #TO DO, number of mobs for each level
 # -------------Init-------------------
+game_state = GAME_START
 pygame.init()
 GAME_FONT = pygame.freetype.Font("fonts/slkscr.ttf", 24)
 clock = pygame.time.Clock()
@@ -20,18 +20,40 @@ pygame.display.set_icon(icon)
 # spawn player
 
 player = Player(MAP_WIDTH / 2, MAP_HEIGHT * 0.98)
-# ------------Game Loop-----------------
-running = True
+running = True       
 
-while running:
-    clock.tick(FPS)
+#------------------------------------------------------------------------------------------------
+def start_screen():
+
+    global GAME_FONT
+    global game_state
+    global running
+
     MAP_SCREEN.fill(WHITE)
+    GAME_FONT.render_to(MAP_SCREEN, (MAP_WIDTH/2 - 200 , MAP_HEIGHT/2), "PREMSS AMNY KEY TO STAMRMT :)", (0, 0, 0))
 
-    # EVENT HANDLING
     for event in pygame.event.get():
-        # check for closing window
+        if event.type == pygame.KEYDOWN:
+            game_state = GAME_PLAYING
         if event.type == pygame.QUIT:
             running = False
+
+    pygame.display.update()
+    pygame.display.flip()
+#-----------------------------------------------------------------------------------------------
+def play():
+
+    global running
+    global clock
+    global game_state
+    global mobs_to_spawn
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    clock.tick(FPS)
+    MAP_SCREEN.fill(WHITE)    
 
     if player.spawn_bullet == True:
         add_bullets(player.x, player.y, 0, MAP_SCREEN)
@@ -43,7 +65,6 @@ while running:
     if mobs_to_spawn > 0 :
         add_mob()
         mobs_to_spawn -=  1
-
     
     for i in range(0, len(mobs)):
         if(mobs[i].is_dead == True):            
@@ -65,7 +86,6 @@ while running:
                 mobs[i].death()
                 bullets[j].death()
             
-
         if(player.is_collision(mobs[i]) == True):
             player.death()
     
@@ -76,13 +96,10 @@ while running:
 
         if player.hp == 0: 
             player.is_dead = True
-    
-    
-    if(player.is_dead == True):        
-        running = False
-        print("Przegrana!!")
-                    
-    
+
+    if player.is_dead:
+        game_state = GAME_OVER
+        
     loop_over(bullets, MAP_SCREEN)
     loop_over(mobs, MAP_SCREEN)
     loop_over(mob_bullets, MAP_SCREEN)
@@ -90,13 +107,41 @@ while running:
     player.move()
     player.update_position()
     player.check_border()
-
     player.display(MAP_SCREEN)
+
+
     GAME_FONT.render_to(MAP_SCREEN, (0, MAP_HEIGHT - 58), "Your score: " + str(player.score), (0, 0, 0))
     GAME_FONT.render_to(MAP_SCREEN, (0, MAP_HEIGHT - 24), "Your hp: " + str(player.hp), (0, 0, 0))
     pygame.display.update()
     pygame.display.flip()
+#-----------------------------------------
+def game_over_screen():
+    global GAME_FONT
+    global running
 
-# -----------------------------------------
+    MAP_SCREEN.fill(WHITE)
+    GAME_FONT.render_to(MAP_SCREEN, (MAP_WIDTH/2, MAP_HEIGHT/2), "LOMSER :(", (0, 0, 0))
+
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                running = False
+        if event.type == pygame.QUIT:
+            running = False
+
+    pygame.display.update()
+    pygame.display.flip()
+
+# --------------------------------Game Loop------------------------------------------------------
+while running:
+
+    if game_state == GAME_START: 
+        start_screen()
+
+    elif game_state == GAME_PLAYING:
+        play()        
+    
+    elif game_state == GAME_OVER:
+        game_over_screen()
 
 pygame.quit()
