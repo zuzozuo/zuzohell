@@ -7,16 +7,16 @@ class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.radius = 30
-        self.hp = 10
+        self.display_radius = 35
+        self.hp = PLAYER_MAX_HP
         self.score = 0
         self.speed = 3
-        self.weapon = 0
         self.fire = False
         self.x = x
         self.y = y
         self.is_player = True
 
-        self.image = pygame.transform.scale(PLAYER_IMAGE.convert(), (2 * self.radius, 2 * self.radius))
+        self.image = pygame.transform.scale(PLAYER_IMAGE.convert(), (2 * self.display_radius, 2 * self.display_radius))
         self.transColor = PLAYER_IMAGE.get_at((0,0))
         self.image.set_colorkey(self.transColor)
     
@@ -67,9 +67,7 @@ class Player(Entity):
             # HANDLING EVENTS
 
     def display(self, surface):
-        #pygame.draw.rect(surface, RED,
-        #                 pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2))
-        #pygame.draw.circle(surface, RED, (self.x, self.y) , self.radius, 0)
+
         pygame.draw.circle(surface, YELLOW, (self.x, self.y) , self.radius, 0)
         MAP_SCREEN.blit(self.image, (self.x-self.radius, self.y-self.radius))
 

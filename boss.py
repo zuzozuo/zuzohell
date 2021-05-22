@@ -5,11 +5,11 @@ class Boss(Entity):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.radius = 60
-        self.hp = 10
-        self.speed = 0
-        self.weapon = 0
+        self.hp = BOSS_MAX_HP
         self.can_attack = True
         self.bullet_break = pygame.time.get_ticks()
+        self.velocity = pygame.Vector2(0,1)
+        self.is_boss = True
 
         self.image = pygame.transform.scale(BOSS_IMAGE.convert(), (2 * self.radius, 2 * self.radius))
         self.transColor = BOSS_IMAGE.get_at((0,0))

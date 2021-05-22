@@ -3,12 +3,12 @@ import pygame.mixer
 
 pygame.mixer.init()
 
-WINDOW_HEIGHT = 792
+WINDOW_HEIGHT = 720
 WINDOW_WIDTH = 1008
 
 MAP_HEIGHT = 720
 MAP_WIDTH = 672
-MAP_OFFSET = 24
+WINDOW_OFFSET =  WINDOW_WIDTH - MAP_WIDTH
 
 WORLD_CEILING =  -30
 
@@ -37,6 +37,8 @@ MOB_IMAGE = pygame.image.load('img/mob5.png')
 BOSS_IMAGE = pygame.image.load('img/boss.png')
 
 MAP_SCREEN = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
+#MAP_SCREEN = pygame.surface.Surface((MAP_WIDTH, MAP_HEIGHT))
+WINDOW_SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 #GAME STATES
 
@@ -56,6 +58,20 @@ BOSS_APPEARS_SOUND = pygame.mixer.Sound('Sounds/weewee_sound.mp3')
 PLAYER_BULLET_SOUND = pygame.mixer.Sound('Sounds/shoot1_sound.mp3')
 PLAYER_DEATH_SOUND = pygame.mixer.Sound('Sounds/youlose2_sound.mp3')
 GAME_OVER_SOUND = pygame.mixer.Sound('Sounds/youlose1_sound.mp3')
+
+#FONTS
+
+INFO_FONT_SIZE = 24
+START_FONT_SIZE = 50
+
+
+PLAYER_MAX_HP = 10
+BOSS_MAX_HP = 10
+
+#HEALTH BARS
+
+HEALTH_BAR_WIDTH = 100
+HEALTH_BAR_HEIGHT = 20
 
 
 

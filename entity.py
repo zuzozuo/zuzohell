@@ -21,6 +21,7 @@ class Entity:
         self.spawn_bullet = False
         self.last_update = pygame.time.get_ticks()
         self.is_player = False
+        self.is_boss = False
         self.is_dead = False
 
     def init(self):  # any entity init

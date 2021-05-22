@@ -6,6 +6,7 @@ import math
 import random
 import pygame
 import pygame.mixer
+import pygame.freetype
 
 def init_game():
     pass
@@ -44,9 +45,6 @@ def add_boss_bullets(x, y, radius):
         #bullet.velocity = pygame.Vector2(0, BASIC_BULLET_SPEED).rotate_rad(angle)
         bullet.color = RED
         boss_bullets.append(bullet)
-        print("boo")
-
-
 
 def loop_over(objects, surface):
     for ent in objects:

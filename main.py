@@ -34,8 +34,8 @@ def start_screen():
     global boss
     global boss_phase
 
-    MAP_SCREEN.fill(WHITE)
-    GAME_FONT.render_to(MAP_SCREEN, (MAP_WIDTH/2 - 200 , MAP_HEIGHT/2), "PREMSS AMNY KEY TO STAMRMT :)", (0, 0, 0))
+    WINDOW_SCREEN.fill(WHITE)
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/2 - 200 , MAP_HEIGHT/2), "PREMSS AMNY KEY TO STAMRMT :)", (0, 0, 0))
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -43,6 +43,7 @@ def start_screen():
         if event.type == pygame.QUIT:
             running = False
 
+    pygame.draw.rect(MAP_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
     pygame.display.update()
     pygame.display.flip()
 #-----------------------------------------------------------------------------------------------
@@ -61,10 +62,10 @@ def play():
             running = False
 
     clock.tick(FPS)
-    MAP_SCREEN.fill(WHITE)    
+    WINDOW_SCREEN.fill(WHITE)    
 
     if player.spawn_bullet == True:
-        add_bullets(player.x, player.y, 0, MAP_SCREEN)
+        add_bullets(player.x, player.y, 0, WINDOW_SCREEN)
         PLAYER_BULLET_SOUND.play()
         player.spawn_bullet = False
 
@@ -85,7 +86,7 @@ def play():
             mobs[i].attack()
 
             if(mobs[i].spawn_bullet == True):
-                add_mob_bullets(mobs[i].x, mobs[i].y, 0, MAP_SCREEN)    
+                add_mob_bullets(mobs[i].x, mobs[i].y, 0, WINDOW_SCREEN)    
                 mobs[i].spawn_bullet = False    
             mobs[i].can_attack = False
 
@@ -120,9 +121,9 @@ def play():
         if player.hp == 0: 
             player.is_dead = True
         
-    loop_over(bullets, MAP_SCREEN)
-    loop_over(mobs, MAP_SCREEN)
-    loop_over(mob_bullets, MAP_SCREEN)
+    loop_over(bullets, WINDOW_SCREEN)
+    loop_over(mobs, WINDOW_SCREEN)
+    loop_over(mob_bullets, WINDOW_SCREEN)
     
     player.move()
     player.update()
@@ -148,6 +149,7 @@ def play():
         for i in range(0, len(bullets)):
             if(boss.is_collision(bullets[i]) == True):
                 boss.hp -= 1
+                player.score += 1
                 print(boss.hp)
                 bullets[i].death()
         
@@ -164,7 +166,7 @@ def play():
             boss.death()
 
         boss.update()
-        boss.display(MAP_SCREEN)
+        boss.display(WINDOW_SCREEN)
 
         if(boss.is_dead):
             boss_phase = False
@@ -173,11 +175,14 @@ def play():
     if player.is_dead:
         game_state = GAME_OVER
     
-    loop_over(boss_bullets, MAP_SCREEN)
+    loop_over(boss_bullets, WINDOW_SCREEN)
     
 
-    GAME_FONT.render_to(MAP_SCREEN, (0, MAP_HEIGHT - 58), "Your score: " + str(player.score), (0, 0, 0))
-    GAME_FONT.render_to(MAP_SCREEN, (0, MAP_HEIGHT - 24), "Your hp: " + str(player.hp), (0, 0, 0))
+    pygame.draw.rect(MAP_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
+    GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, 58), "Your score: " + str(round(player.score, 2)), (255, 255, 255))
+    GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, 24), "Your hp: " + str(player.hp), (255, 255, 255))
+    if(not(boss is None)):        
+        GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, 82), "Boss hp: " + str(boss.hp), (255, 255, 255))
     pygame.display.update()
     pygame.display.flip()
 #-----------------------------------------
@@ -185,8 +190,8 @@ def game_over_screen():
     global GAME_FONT
     global running
 
-    MAP_SCREEN.fill(WHITE)
-    GAME_FONT.render_to(MAP_SCREEN, (MAP_WIDTH/2, MAP_HEIGHT/2), "LOMSER :(", (0, 0, 0))
+    WINDOW_SCREEN.fill(WHITE)
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/2, MAP_HEIGHT/2), "LOMSER :(", (0, 0, 0))
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -194,7 +199,8 @@ def game_over_screen():
                 running = False
         if event.type == pygame.QUIT:
             running = False
-
+            
+    pygame.draw.rect(MAP_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
     pygame.display.update()
     pygame.display.flip()
 
