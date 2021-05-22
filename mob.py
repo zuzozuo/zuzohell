@@ -8,8 +8,6 @@ class Mob(Entity, pygame.sprite.Sprite):
         self.radius = 30
         self.hp = 0
         self.speed = 0
-        self.weapon = 0
-        self.type = 'Mob'
         self.can_attack = True
         self.bullet_break = pygame.time.get_ticks()
 
@@ -22,10 +20,6 @@ class Mob(Entity, pygame.sprite.Sprite):
         self.speed = random.random() * (SPEED_MAX - SPEED_MIN + 1) + SPEED_MIN
         self.velocity.x = 0
         self.velocity.y = self.speed
-
-    def update(self):
-        super().update()
-        self.attack()
 
     def display(self, surface):
         #pygame.draw.rect(self.image, YELLOW, pygame.Rect(self.x/2, self.y/2, 60, 60))   

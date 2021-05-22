@@ -8,12 +8,17 @@ class Boss(Entity):
         self.hp = 10
         self.speed = 0
         self.weapon = 0
+        self.can_attack = True
+        self.bullet_break = pygame.time.get_ticks()
 
         self.image = pygame.transform.scale(BOSS_IMAGE.convert(), (2 * self.radius, 2 * self.radius))
         self.transColor = BOSS_IMAGE.get_at((0,0))
         self.image.set_colorkey(self.transColor)
 
-    # HANDLING EVENTS
+    def update(self):
+        super().update()
+        self.attack()
+
     def check_border(self):
         # LEFT
         if self.x <= self.radius + 10:
@@ -31,20 +36,27 @@ class Boss(Entity):
             if(self.y <= self.radius):
                 self.velocity.y = 1
 
-    def attack(self):
-        pass
-
     def is_on_board(self):
         if self.y < self.radius + 10:
             return True
-        
+
+    def death(self):
+        super().death()
+        BOSS_DEATH_SOUND.play()        
 
     def display(self, surface):
         pygame.draw.circle(surface, YELLOW, (self.x, self.y) , self.radius, 0)
         MAP_SCREEN.blit(self.image, (self.x-self.radius, self.y-self.radius))
 
     def cooldown(self):
-        pass
+        now = pygame.time.get_ticks()  #spawn delay
+        if(now - self.bullet_break > 1000):
+            self.bullet_break = now
+            self.can_attack = True
+    
+    def attack(self):
+        now = pygame.time.get_ticks()  #spawn delay
+        if(now - self.last_update > 200):
+            self.last_update = now
+            self.spawn_bullet = True
 
-    def collision(self):
-        pass

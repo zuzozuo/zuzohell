@@ -1,4 +1,8 @@
 import pygame
+import pygame.mixer
+
+pygame.mixer.init()
+
 WINDOW_HEIGHT = 792
 WINDOW_WIDTH = 1008
 
@@ -40,4 +44,18 @@ GAME_START = 1
 GAME_PLAYING = 2
 GAME_OVER = 3
 
-MOBS_NUMBER = 5
+#
+MOBS_NUMBER = 3
+BOSS_BULLETS_NUMBER = 10
+
+#SOUNDS
+FEAR_SOUND = pygame.mixer.Sound('Sounds/projekt.mp3')
+LOSE_SOUND = pygame.mixer.Sound('Sounds/youlose2_sound.mp3')
+BOSS_DEATH_SOUND = pygame.mixer.Sound('Sounds/dead_boss.mp3')
+BOSS_APPEARS_SOUND = pygame.mixer.Sound('Sounds/weewee_sound.mp3')
+PLAYER_BULLET_SOUND = pygame.mixer.Sound('Sounds/shoot1_sound.mp3')
+PLAYER_DEATH_SOUND = pygame.mixer.Sound('Sounds/youlose2_sound.mp3')
+GAME_OVER_SOUND = pygame.mixer.Sound('Sounds/youlose1_sound.mp3')
+
+
+

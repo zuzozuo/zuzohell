@@ -24,6 +24,10 @@ class Player(Entity):
     def bonus(self):  # gain bonus after collecting items
         pass
 
+    def death(self):
+        super().death()
+        PLAYER_DEATH_SOUND.play()
+
     # MOVING
     def move(self):
         self.velocity = pygame.Vector2(0, 0)

@@ -65,6 +65,7 @@ def play():
 
     if player.spawn_bullet == True:
         add_bullets(player.x, player.y, 0, MAP_SCREEN)
+        PLAYER_BULLET_SOUND.play()
         player.spawn_bullet = False
 
     if(len(mobs) < MOBS_NUMBER and not boss_phase):
@@ -100,12 +101,13 @@ def play():
     #####WAITING FOR BOSS###############
 
     if(boss is None):
-        if ((player.score % 5 == 0 and player.score > 0) or boss_phase) :
+        if ((player.score % 1 == 0 and player.score > 0) or boss_phase) :
             mobs_to_spawn = 0   
             boss_phase = True
         if(not mobs and not mob_bullets):
             boss = Boss(MAP_WIDTH/2, 0 - 60) #start boss position TODO
             boss.velocity = pygame.Vector2(0,1)
+            BOSS_APPEARS_SOUND.play()
             print("Boss Time!!")
     ######################################
     
@@ -117,9 +119,6 @@ def play():
 
         if player.hp == 0: 
             player.is_dead = True
-
-    if player.is_dead:
-        game_state = GAME_OVER
         
     loop_over(bullets, MAP_SCREEN)
     loop_over(mobs, MAP_SCREEN)
@@ -131,6 +130,18 @@ def play():
 
     if(boss_phase and not (boss is None)):
 
+        boss.cooldown()
+
+        if(boss.can_attack == True):
+            boss.attack()
+
+            if(boss.spawn_bullet == True):
+                add_boss_bullets(boss.x, boss.y, boss.radius)    
+                boss.spawn_bullet = False    
+            boss.can_attack = False
+
+            print(boss_bullets)
+
         if(player.is_collision(boss) == True):
             player.death()
 
@@ -139,6 +150,15 @@ def play():
                 boss.hp -= 1
                 print(boss.hp)
                 bullets[i].death()
+        
+        for i in range(0, len(boss_bullets)):
+            if(player.is_collision(boss_bullets[i]) == True):
+                player.hp -= 1
+                boss_bullets[i].death()
+            
+            if player.hp == 0:
+                player.is_dead == True
+    
         
         if boss.hp == 0:
             boss.death()
@@ -149,6 +169,12 @@ def play():
         if(boss.is_dead):
             boss_phase = False
             boss = None
+
+    if player.is_dead:
+        game_state = GAME_OVER
+    
+    loop_over(boss_bullets, MAP_SCREEN)
+    
 
     GAME_FONT.render_to(MAP_SCREEN, (0, MAP_HEIGHT - 58), "Your score: " + str(player.score), (0, 0, 0))
     GAME_FONT.render_to(MAP_SCREEN, (0, MAP_HEIGHT - 24), "Your hp: " + str(player.hp), (0, 0, 0))
