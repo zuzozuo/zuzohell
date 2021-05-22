@@ -4,10 +4,13 @@ import pygame.freetype
 
 from CONSTS import *
 from player import Player
-from entities import bullets
+from entities import *
+from boss import Boss
 from helpers import *
 # ------------------------------------
-mobs_to_spawn = 5 #TO DO, number of mobs for each level
+mobs_to_spawn = MOBS_NUMBER #TO DO, number of mobs for each level
+boss_phase = False
+boss_wait = False
 # -------------Init-------------------
 game_state = GAME_START
 pygame.init()
@@ -28,6 +31,8 @@ def start_screen():
     global GAME_FONT
     global game_state
     global running
+    global boss
+    global boss_phase
 
     MAP_SCREEN.fill(WHITE)
     GAME_FONT.render_to(MAP_SCREEN, (MAP_WIDTH/2 - 200 , MAP_HEIGHT/2), "PREMSS AMNY KEY TO STAMRMT :)", (0, 0, 0))
@@ -47,6 +52,9 @@ def play():
     global clock
     global game_state
     global mobs_to_spawn
+    global boss_phase
+    global boss_wait
+    global boss
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -59,7 +67,7 @@ def play():
         add_bullets(player.x, player.y, 0, MAP_SCREEN)
         player.spawn_bullet = False
 
-    if(len(mobs) < 4):
+    if(len(mobs) < MOBS_NUMBER and not boss_phase):
         mobs_to_spawn = 1
     
     if mobs_to_spawn > 0 :
@@ -89,6 +97,18 @@ def play():
         if(player.is_collision(mobs[i]) == True):
             player.death()
     
+    #####WAITING FOR BOSS###############
+
+    if(boss is None):
+        if ((player.score % 5 == 0 and player.score > 0) or boss_phase) :
+            mobs_to_spawn = 0   
+            boss_phase = True
+        if(not mobs and not mob_bullets):
+            boss = Boss(MAP_WIDTH/2, 0 - 60) #start boss position TODO
+            boss.velocity = pygame.Vector2(0,1)
+            print("Boss Time!!")
+    ######################################
+    
     for i in range(0, len(mob_bullets)):
         if(player.is_collision(mob_bullets[i])):
             mob_bullets[i].is_dead = True
@@ -109,6 +129,9 @@ def play():
     player.check_border()
     player.display(MAP_SCREEN)
 
+    if(boss_phase and not (boss is None)):
+        boss.update()
+        boss.display(MAP_SCREEN)
 
     GAME_FONT.render_to(MAP_SCREEN, (0, MAP_HEIGHT - 58), "Your score: " + str(player.score), (0, 0, 0))
     GAME_FONT.render_to(MAP_SCREEN, (0, MAP_HEIGHT - 24), "Your hp: " + str(player.hp), (0, 0, 0))

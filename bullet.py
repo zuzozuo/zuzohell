@@ -26,6 +26,7 @@ class Bullet(Entity):
     def check_border(self):
         if self.y > MAP_HEIGHT + self.radius:
             self.is_dead = True
+            
         if self.y < 0:
             self.is_dead = True
 

@@ -1,5 +1,5 @@
 # Stores lists of entities
-boss = []
+boss = None
 mobs = []
 bullets = []
 mob_bullets = []

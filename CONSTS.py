@@ -30,6 +30,7 @@ SPEED_MAX = 1
 
 PLAYER_IMAGE = pygame.image.load('img/player.png')
 MOB_IMAGE = pygame.image.load('img/mob5.png')
+BOSS_IMAGE = pygame.image.load('img/boss.png')
 
 MAP_SCREEN = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
 
@@ -38,3 +39,5 @@ MAP_SCREEN = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
 GAME_START = 1
 GAME_PLAYING = 2
 GAME_OVER = 3
+
+MOBS_NUMBER = 5
