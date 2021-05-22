@@ -7,7 +7,8 @@ class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.radius = 30
-        self.hp = 0
+        self.hp = 10
+        self.score = 0
         self.speed = 3
         self.weapon = 0
         self.fire = False

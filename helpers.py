@@ -35,3 +35,4 @@ def loop_over(objects, surface):
         if ent.is_dead:
             objects.remove(ent)
         ent.display(surface)
+

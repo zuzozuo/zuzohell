@@ -1,5 +1,6 @@
 
 import pygame
+import pygame.freetype 
 
 from CONSTS import *
 from player import Player
@@ -8,9 +9,9 @@ from helpers import *
 # ------------------------------------
 score = 0
 mobs_to_spawn = 5 #TO DO, number of mobs for each level
-#mob_bullets_to_spawn = 5
 # -------------Init-------------------
 pygame.init()
+GAME_FONT = pygame.freetype.Font("fonts/slkscr.ttf", 24)
 clock = pygame.time.Clock()
 
 pygame.display.set_caption("Zuzohell")
@@ -35,14 +36,18 @@ while running:
     if player.spawn_bullet == True:
         add_bullets(player.x, player.y, 0, MAP_SCREEN)
         player.spawn_bullet = False
+
+    if(len(mobs) < 4):
+        mobs_to_spawn = 1
     
     if mobs_to_spawn > 0 :
         add_mob()
         mobs_to_spawn -=  1
 
+    
     for i in range(0, len(mobs)):
-        if(mobs[i].is_dead == True):
-            continue
+        if(mobs[i].is_dead == True):            
+            continue 
 
         mobs[i].cooldown()
 
@@ -56,6 +61,7 @@ while running:
 
         for j in range(0, len(bullets)):
             if(bullets[j].is_collision(mobs[i]) == True):    
+                player.score += 1
                 mobs[i].death()
                 bullets[j].death()
             
@@ -65,10 +71,14 @@ while running:
     
     for i in range(0, len(mob_bullets)):
         if(player.is_collision(mob_bullets[i])):
+            mob_bullets[i].is_dead = True
+            player.hp -= 1
+
+        if player.hp == 0: 
             player.is_dead = True
     
     
-    if(player.is_dead == True):
+    if(player.is_dead == True):        
         running = False
         print("Przegrana!!")
                     
@@ -82,8 +92,11 @@ while running:
     player.check_border()
 
     player.display(MAP_SCREEN)
+    GAME_FONT.render_to(MAP_SCREEN, (0, MAP_HEIGHT - 58), "Your score: " + str(player.score), (0, 0, 0))
+    GAME_FONT.render_to(MAP_SCREEN, (0, MAP_HEIGHT - 24), "Your hp: " + str(player.hp), (0, 0, 0))
     pygame.display.update()
     pygame.display.flip()
 
 # -----------------------------------------
+
 pygame.quit()

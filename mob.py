@@ -48,7 +48,7 @@ class Mob(Entity, pygame.sprite.Sprite):
 
     def check_border(self): 
 
-        if self.y > MAP_HEIGHT - self.radius:
+        if self.y > MAP_HEIGHT + self.radius:
             self.is_dead = True
 
         if self.x < 0 - self.radius:

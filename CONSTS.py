@@ -36,6 +36,6 @@ TYPE_BOSS = 4
 #IMAGES
 
 PLAYER_IMAGE = pygame.image.load('img/player.png')
-MOB_IMAGE = pygame.image.load('img/mob.png')
+MOB_IMAGE = pygame.image.load('img/mob5.png')
 
 MAP_SCREEN = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
