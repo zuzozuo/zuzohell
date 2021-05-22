@@ -113,6 +113,7 @@ def play():
         if(player.is_collision(mob_bullets[i])):
             mob_bullets[i].is_dead = True
             player.hp -= 1
+    
 
         if player.hp == 0: 
             player.is_dead = True
@@ -125,13 +126,29 @@ def play():
     loop_over(mob_bullets, MAP_SCREEN)
     
     player.move()
-    player.update_position()
-    player.check_border()
+    player.update()
     player.display(MAP_SCREEN)
 
     if(boss_phase and not (boss is None)):
+
+        if(player.is_collision(boss) == True):
+            player.death()
+
+        for i in range(0, len(bullets)):
+            if(boss.is_collision(bullets[i]) == True):
+                boss.hp -= 1
+                print(boss.hp)
+                bullets[i].death()
+        
+        if boss.hp == 0:
+            boss.death()
+
         boss.update()
         boss.display(MAP_SCREEN)
+
+        if(boss.is_dead):
+            boss_phase = False
+            boss = None
 
     GAME_FONT.render_to(MAP_SCREEN, (0, MAP_HEIGHT - 58), "Your score: " + str(player.score), (0, 0, 0))
     GAME_FONT.render_to(MAP_SCREEN, (0, MAP_HEIGHT - 24), "Your hp: " + str(player.hp), (0, 0, 0))

@@ -12,7 +12,7 @@ def reset_game():
     pass
 
 def add_mob():
-    mob = Mob(random.randint(0,MAP_WIDTH), WORLD_CEILING)
+    mob = Mob(random.randint(0,int(MAP_WIDTH/30)) * 30, WORLD_CEILING - 30)
     mob.init()
     mobs.append(mob)
 

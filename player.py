@@ -24,9 +24,6 @@ class Player(Entity):
     def bonus(self):  # gain bonus after collecting items
         pass
 
-    def update(self):
-        pass
-
     # MOVING
     def move(self):
         self.velocity = pygame.Vector2(0, 0)
