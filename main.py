@@ -7,9 +7,12 @@ from entities import *
 from boss import Boss
 from helpers import *
 # ------------------------------------
-mobs_to_spawn = MOBS_NUMBER #TO DO, number of mobs for each level
+mobs_to_spawn = random.randint(MIN_MOBS_NUMBER, MAX_MOB_NUMBER) 
+INIT_MOBS_NUMBER = mobs_to_spawn #need to remeber this value
+mobs_to_kill = random.randint(MIN_NUMBER_TO_KILL, MAX_NUMBER_TO_KILL)
 boss_phase = False
 boss_wait = False
+boss_counter = 0
 # -------------Init-------------------
 game_state = GAME_START
 pygame.init()
@@ -19,8 +22,8 @@ clock = pygame.time.Clock()
 pygame.display.set_caption("Zuzohell")
 icon = pygame.image.load('img/411.png')
 pygame.display.set_icon(icon)
-# spawn player
 
+# spawn player
 player = Player(MAP_WIDTH / 2, MAP_HEIGHT * 0.98)
 running = True       
 
@@ -52,9 +55,11 @@ def play():
     global clock
     global game_state
     global mobs_to_spawn
+    global mobs_to_kill
     global boss_phase
     global boss_wait
     global boss
+    global boss_counter 
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -68,8 +73,8 @@ def play():
         PLAYER_BULLET_SOUND.play()
         player.spawn_bullet = False
 
-    if(len(mobs) < MOBS_NUMBER and not boss_phase):
-        mobs_to_spawn = 1
+    if(len(mobs) < INIT_MOBS_NUMBER and not boss_phase):
+        mobs_to_spawn = INIT_MOBS_NUMBER
     
     if mobs_to_spawn > 0 :
         add_mob()
@@ -92,11 +97,14 @@ def play():
         for j in range(0, len(bullets)):
             if(bullets[j].is_collision(mobs[i]) == True):    
                 player.score += 1
-                mobs[i].death()
+                mobs[i].hp -= PLAYER_MOB_DAMAGE
+                if(mobs[i].hp <= 0):
+                    mobs[i].death()
                 bullets[j].death()
             
         if(player.is_collision(mobs[i]) == True):
-            player.death()
+            player.hp -= MOB_PLAYER_COLLISION_DAMAGE
+            continue
         
     for i in range(0, len(boss_bullets)):
         if(player.is_collision(boss_bullets[i]) == True):
@@ -106,7 +114,7 @@ def play():
     #####WAITING FOR BOSS###############
 
     if(boss is None):
-        if ((player.score % 1 == 0 and player.score > 0) or boss_phase) :
+        if ((player.score % mobs_to_kill == 0 and player.score > 0) or boss_phase) :
             mobs_to_spawn = 0   
             boss_phase = True
         if(not mobs and not mob_bullets):
@@ -156,6 +164,7 @@ def play():
     
         if boss.hp <= 0:
             boss.death()
+            boss_counter +=1
 
         boss.update()
         boss.display(WINDOW_SCREEN)
@@ -163,6 +172,9 @@ def play():
         if(boss.is_dead):
             boss_phase = False
             boss = None
+
+            if(boss_counter == BOSS_NUMBER):
+                game_state = GAME_WIN
 
     if player.is_dead:
         game_state = GAME_OVER
@@ -196,6 +208,26 @@ def game_over_screen():
     pygame.display.update()
     pygame.display.flip()
 
+#-----------------------------------------------------------------------
+def game_win_screen():
+    global GAME_FONT
+    global running
+
+    WINDOW_SCREEN.fill(WHITE)
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/2, MAP_HEIGHT/2), "WIMNER!!!!", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/2, MAP_HEIGHT/2 + INFO_FONT_SIZE), "Your score: " + str(player.score), (0, 0, 0))
+
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                running = False
+        if event.type == pygame.QUIT:
+            running = False
+            
+    pygame.draw.rect(MAP_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
+    pygame.display.update()
+    pygame.display.flip()
+
 # --------------------------------Game Loop------------------------------------------------------
 while running:
 
@@ -207,5 +239,8 @@ while running:
     
     elif game_state == GAME_OVER:
         game_over_screen()
+    
+    elif game_state == GAME_WIN:
+        game_win_screen()
 
 pygame.quit()
