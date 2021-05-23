@@ -37,47 +37,28 @@ def add_boss_bullets(x, y, radius, sequence_number, bullets_number):
 
     step = 2 * math.pi / bullets_number #calculate radians
 
-    if sequence_number == 0:
-        for i in range(0, bullets_number):
-            x_spawn = x + math.sin(step * i) * radius
-            y_spawn = y + math.cos(step * i) * radius
-            bullet = Bullet(x_spawn, y_spawn)
-            bullet.velocity = pygame.Vector2(0,0)
+    for i in range(0, bullets_number):
+        x_spawn = x + math.sin(step * i) * radius
+        y_spawn = y + math.cos(step * i) * radius
+        bullet = Bullet(x_spawn, y_spawn)
+        bullet.color = RED
+
+        if sequence_number == 0:
             bullet.velocity = pygame.Vector2(0, BASIC_BULLET_SPEED).rotate_rad(-1 * step * i )
-            bullet.color = RED
-            boss_bullets.append(bullet)
 
-    elif sequence_number == 1:
-        for i in range(0, bullets_number):
-            x_spawn = x + math.sin(step * i) * radius
-            y_spawn = y + math.cos(step * i) * radius
+        if sequence_number == 1:
             angle = random.random() - 0.5
-            bullet = Bullet(x_spawn, y_spawn)
             bullet.velocity = pygame.Vector2(0,0)
-            #bullet.velocity = pygame.Vector2(0, BASIC_BULLET_SPEED).rotate_rad(-1 * step * i )
             bullet.velocity = pygame.Vector2(0, BASIC_BULLET_SPEED).rotate_rad(angle)
-            bullet.color = RED
-            boss_bullets.append(bullet)
 
-    elif sequence_number == 2:
-        for i in range(0, bullets_number):
-            x_spawn = x + math.sin(step * i) * radius
-            y_spawn = y + math.cos(step * i) * radius
-            bullet = Bullet(x_spawn, y_spawn)
-            bullet.velocity = pygame.Vector2(0,0)
+        if sequence_number == 2:
             bullet.velocity = pygame.Vector2(0, random.randint(2,5)).rotate_rad(1 * step * i )
-            bullet.color = RED
-            boss_bullets.append(bullet)
-    elif sequence_number == 3:
-        for i in range(0, bullets_number):
-            x_spawn = x + math.sin(step * i) * radius
-            y_spawn = y + math.cos(step * i) * radius
-            bullet = Bullet(x_spawn, y_spawn)
-            bullet.velocity = pygame.Vector2(0,0)
+
+        if sequence_number == 3:
             bullet.velocity = pygame.Vector2(0, random.randint(2,4)).rotate_rad(-1 * step * i )
             bullet.radius = random.randint(6, 10)
-            bullet.color = RED
-            boss_bullets.append(bullet)
+        
+        boss_bullets.append(bullet)
 
 
 def points_to_percent(hp, max_hp):
