@@ -6,7 +6,7 @@ class Mob(Entity, pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__(x,y)
         self.radius = 30
-        self.hp = 0
+        self.hp = 3
         self.speed = 0
         self.can_attack = True
         self.bullet_break = pygame.time.get_ticks()

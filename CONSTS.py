@@ -48,8 +48,8 @@ GAME_OVER = 3
 
 #
 MOBS_NUMBER = 3
-BOSS_BULLETS_NUMBER = 10
-
+MIN_BOSS_BULLETS_NUMBER = 10
+MAX_BOSS_BULLETS_NUMBER = 20
 #SOUNDS
 FEAR_SOUND = pygame.mixer.Sound('Sounds/projekt.mp3')
 LOSE_SOUND = pygame.mixer.Sound('Sounds/youlose2_sound.mp3')
@@ -58,6 +58,11 @@ BOSS_APPEARS_SOUND = pygame.mixer.Sound('Sounds/weewee_sound.mp3')
 PLAYER_BULLET_SOUND = pygame.mixer.Sound('Sounds/shoot1_sound.mp3')
 PLAYER_DEATH_SOUND = pygame.mixer.Sound('Sounds/youlose2_sound.mp3')
 GAME_OVER_SOUND = pygame.mixer.Sound('Sounds/youlose1_sound.mp3')
+
+PLAYER_BOSS_DAMAGE = 0.5
+PLAYER_MOB_DAMAGE=  0.75
+MOB_PLAYER_DAMAGE = 0.4
+BOSS_PLAYER_DAMAGE = 0.9
 
 #FONTS
 

@@ -1,3 +1,4 @@
+import random
 from entity import Entity
 from CONSTS import *
 
@@ -10,14 +11,23 @@ class Boss(Entity):
         self.bullet_break = pygame.time.get_ticks()
         self.velocity = pygame.Vector2(0,1)
         self.is_boss = True
+        self.attack_type = 0 
+        self.bullet_number = 0
 
         self.image = pygame.transform.scale(BOSS_IMAGE.convert(), (2 * self.radius, 2 * self.radius))
         self.transColor = BOSS_IMAGE.get_at((0,0))
         self.image.set_colorkey(self.transColor)
 
+    def init(self):
+        self.attack_type = random.randint(0,3)
+        self.bullet_number = random.randint(MIN_BOSS_BULLETS_NUMBER , MAX_BOSS_BULLETS_NUMBER)
+
     def update(self):
         super().update()
         self.attack()
+        if self.hp < 0:
+            self.hp = 0
+    
 
     def check_border(self):
         # LEFT

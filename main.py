@@ -1,7 +1,6 @@
 
 import pygame
 import pygame.freetype 
-
 from CONSTS import *
 from player import Player
 from entities import *
@@ -98,6 +97,11 @@ def play():
             
         if(player.is_collision(mobs[i]) == True):
             player.death()
+        
+    for i in range(0, len(boss_bullets)):
+        if(player.is_collision(boss_bullets[i]) == True):
+            player.hp -= BOSS_PLAYER_DAMAGE
+            boss_bullets[i].death()
     
     #####WAITING FOR BOSS###############
 
@@ -107,19 +111,17 @@ def play():
             boss_phase = True
         if(not mobs and not mob_bullets):
             boss = Boss(MAP_WIDTH/2, 0 - 60) #start boss position TODO
-            boss.velocity = pygame.Vector2(0,1)
+            boss.init()
             BOSS_APPEARS_SOUND.play()
-            print("Boss Time!!")
     ######################################
     
     for i in range(0, len(mob_bullets)):
         if(player.is_collision(mob_bullets[i])):
             mob_bullets[i].is_dead = True
-            player.hp -= 1
+            player.hp -= MOB_PLAYER_DAMAGE
     
-
-        if player.hp == 0: 
-            player.is_dead = True
+    if player.hp <= 0: 
+        player.death()
         
     loop_over(bullets, WINDOW_SCREEN)
     loop_over(mobs, WINDOW_SCREEN)
@@ -130,14 +132,14 @@ def play():
     player.display(MAP_SCREEN)
 
     if(boss_phase and not (boss is None)):
-
         boss.cooldown()
 
         if(boss.can_attack == True):
             boss.attack()
 
             if(boss.spawn_bullet == True):
-                add_boss_bullets(boss.x, boss.y, boss.radius)    
+                print(boss.attack_type)
+                add_boss_bullets(boss.x, boss.y, boss.radius, boss.attack_type, boss.bullet_number)   
                 boss.spawn_bullet = False    
             boss.can_attack = False
 
@@ -148,21 +150,11 @@ def play():
 
         for i in range(0, len(bullets)):
             if(boss.is_collision(bullets[i]) == True):
-                boss.hp -= 1
+                boss.hp -= PLAYER_BOSS_DAMAGE
                 player.score += 1
-                print(boss.hp)
                 bullets[i].death()
-        
-        for i in range(0, len(boss_bullets)):
-            if(player.is_collision(boss_bullets[i]) == True):
-                player.hp -= 1
-                boss_bullets[i].death()
-            
-            if player.hp == 0:
-                player.is_dead == True
     
-        
-        if boss.hp == 0:
+        if boss.hp <= 0:
             boss.death()
 
         boss.update()
@@ -179,10 +171,10 @@ def play():
     
 
     pygame.draw.rect(MAP_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
-    GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, 58), "Your score: " + str(round(player.score, 2)), (255, 255, 255))
-    GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, 24), "Your hp: " + str(player.hp), (255, 255, 255))
+    GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, INFO_FONT_SIZE), "Your score: " + str(round(player.score, 2)), (255, 255, 255))
+    GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, INFO_FONT_SIZE * 2), "Your hp: " + str(points_to_percent(player.hp, PLAYER_MAX_HP)) + "%", (255, 255, 255))
     if(not(boss is None)):        
-        GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, 82), "Boss hp: " + str(boss.hp), (255, 255, 255))
+        GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, INFO_FONT_SIZE * 3), "Boss hp: " + str(points_to_percent(boss.hp, BOSS_MAX_HP)) + "%", (255, 255, 255))
     pygame.display.update()
     pygame.display.flip()
 #-----------------------------------------

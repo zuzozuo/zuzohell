@@ -19,6 +19,12 @@ class Player(Entity):
         self.image = pygame.transform.scale(PLAYER_IMAGE.convert(), (2 * self.display_radius, 2 * self.display_radius))
         self.transColor = PLAYER_IMAGE.get_at((0,0))
         self.image.set_colorkey(self.transColor)
+
+    
+    def update(self):
+        super().update()
+        if self.hp < 0:
+            self.hp = 0
     
 
     def bonus(self):  # gain bonus after collecting items
@@ -26,6 +32,7 @@ class Player(Entity):
 
     def death(self):
         super().death()
+        self.is_dead == True
         PLAYER_DEATH_SOUND.play()
 
     # MOVING
