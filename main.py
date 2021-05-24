@@ -6,16 +6,16 @@ from entities import *
 from boss import Boss
 from helpers import *
 # ------------------------------------
-print(pygame.font.get_fonts())
 mobs_to_spawn = random.randint(MIN_MOBS_NUMBER, MAX_MOB_NUMBER) 
-INIT_MOBS_NUMBER = mobs_to_spawn #need to remeber this value
 mobs_to_kill = random.randint(MIN_NUMBER_TO_KILL, MAX_NUMBER_TO_KILL)
+INIT_MOBS_NUMBER = mobs_to_spawn #need to remeber this value
+game_state = GAME_START
 boss_phase = False
 boss_wait = False
 boss_counter = 0
 # -------------Init-------------------
-game_state = GAME_START
 pygame.init()
+sound_init()
 TITLE_FONT = pygame.freetype.Font("fonts/slkscr.ttf", 30)
 GAME_FONT = pygame.freetype.Font("fonts/slkscr.ttf", 24)
 INFO_FONT = pygame.freetype.Font("fonts/slkscr.ttf", 12)
@@ -25,26 +25,11 @@ clock = pygame.time.Clock()
 pygame.display.set_caption("Zuzohell")
 icon = pygame.image.load('img/411.png')
 pygame.display.set_icon(icon)
-pygame.mixer.set_num_channels(100)
-pygame.mixer.set_reserved(0)
-pygame.mixer.set_reserved(1)
-pygame.mixer.set_reserved(2)
-pygame.mixer.set_reserved(3)
-pygame.mixer.Sound.set_volume(BACKGROUND_MUSIC, 0.3)
-pygame.mixer.Sound.set_volume(PLAYER_DEATH_SOUND, 1.2)
-pygame.mixer.Sound.set_volume(PLAYER_HURT_SOUND, 0.3)
-pygame.mixer.Sound.set_volume(BOSS_DEATH_SOUND, 0.5)
-pygame.mixer.Sound.set_volume(BOSS_APPEARS_SOUND, 0.5)
-pygame.mixer.Sound.set_volume(PLAYER_BULLET_SOUND, 0.1)
-pygame.mixer.Sound.set_volume(GAME_WIN_SOUND, 0.3)
-pygame.mixer.Sound.set_volume(GAME_WIN_MUSIC, 0.2)
-
 
 play_music = True
 # spawn player
 player = Player(MAP_WIDTH / 2, MAP_HEIGHT * 0.98)
 running = True       
-
 #------------------------------------------------------------------------------------------------
 def start_screen():
 
@@ -77,7 +62,6 @@ def start_screen():
     pygame.display.flip()
 #-----------------------------------------------------------------------------------------------
 def play():
-
     global running
     global clock
     global game_state
@@ -134,7 +118,7 @@ def play():
             
         if(player.is_collision(mobs[i]) == True):
             player.update_hp(-MOB_PLAYER_COLLISION_DAMAGE)
-            PLAYER_HURT_SOUND.play()
+            #PLAYER_HURT_SOUND.play()
         
     for i in range(0, len(boss_bullets)):
         if(player.is_collision(boss_bullets[i]) == True):
@@ -175,12 +159,9 @@ def play():
             boss.attack()
 
             if(boss.spawn_bullet == True):
-                print(boss.attack_type)
                 add_boss_bullets(boss.x, boss.y, boss.radius, boss.attack_type, boss.bullet_number)   
                 boss.spawn_bullet = False    
             boss.can_attack = False
-
-            print(boss_bullets)
 
         if(player.is_collision(boss) == True):
             player.death()
@@ -194,7 +175,6 @@ def play():
         if boss.hp <= 0:
             boss.death()
             boss_counter +=1
-
 
         boss.update()
         boss.display(WINDOW_SCREEN)

@@ -8,6 +8,21 @@ import pygame
 import pygame.mixer
 import pygame.freetype
 
+def sound_init():
+    pygame.mixer.set_num_channels(100)
+    pygame.mixer.set_reserved(0)
+    pygame.mixer.set_reserved(1)
+    pygame.mixer.set_reserved(2)
+    pygame.mixer.set_reserved(3)
+    pygame.mixer.Sound.set_volume(BACKGROUND_MUSIC, 0.3)
+    pygame.mixer.Sound.set_volume(PLAYER_DEATH_SOUND, 1.2)
+    pygame.mixer.Sound.set_volume(PLAYER_HURT_SOUND, 0.3)
+    pygame.mixer.Sound.set_volume(BOSS_DEATH_SOUND, 0.5)
+    pygame.mixer.Sound.set_volume(BOSS_APPEARS_SOUND, 0.5)
+    pygame.mixer.Sound.set_volume(PLAYER_BULLET_SOUND, 0.1)
+    pygame.mixer.Sound.set_volume(GAME_WIN_SOUND, 0.3)
+    pygame.mixer.Sound.set_volume(GAME_WIN_MUSIC, 0.2)
+
 def add_mob():
     mob = Mob(random.randint(0,int(MAP_WIDTH/30)) * 30, WORLD_CEILING - 30)
     mob.init()
