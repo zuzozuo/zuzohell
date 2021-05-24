@@ -86,6 +86,11 @@ class Player(Entity):
     def update_score(self, count):
         self.score += count
 
+    def update_hp(self, count):
+        super().update_hp(count)
+        if count < 0:
+            PLAYER_HURT_SOUND.play()
+
     def update_kill_count(self):
         self.kill_count +=1
 

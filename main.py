@@ -15,13 +15,22 @@ boss_counter = 0
 # -------------Init-------------------
 game_state = GAME_START
 pygame.init()
+TITLE_FONT = pygame.freetype.Font("fonts/slkscr.ttf", 30)
 GAME_FONT = pygame.freetype.Font("fonts/slkscr.ttf", 24)
+INFO_FONT = pygame.freetype.Font("fonts/slkscr.ttf", 12)
 clock = pygame.time.Clock()
 
 pygame.display.set_caption("Zuzohell")
 icon = pygame.image.load('img/411.png')
 pygame.display.set_icon(icon)
+pygame.mixer.set_num_channels(100)
+pygame.mixer.set_reserved(0)
+pygame.mixer.set_reserved(1)
+pygame.mixer.Sound.set_volume(BACKGROUND_MUSIC, 0.3)
+pygame.mixer.Sound.set_volume(MENU_MUSIC, 0.3)
 
+play_menu_music = True
+play_background_music = True
 # spawn player
 player = Player(MAP_WIDTH / 2, MAP_HEIGHT * 0.98)
 running = True       
@@ -36,7 +45,16 @@ def start_screen():
     global boss_phase
 
     WINDOW_SCREEN.fill(WHITE)
-    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/2 - 200 , MAP_HEIGHT/2), "PREMSS AMNY KEY TO STAMRMT :)", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , 60), "THE ZUZOHELL GAME ", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , 120), "HOW TO PLAY?: ", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10  , 150), "SPACE - FIRE ", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10  , 180), "USE ARROW KEYS TO MOVE CHEEMS ", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , 210), "YOU WIN IF YOU KILL 3 BIG CATS  ", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , 240), "YOU LOSE IF TOUCH BIG CAT", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , 270), "OR YOU LOSE WHOLE HP  ", (0, 0, 0))
+
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/2), "PREMSS AMNY KEY TO STAMRMT :)", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT - 30), "AUTHOR: ZUZOZUO", (0, 0, 0))
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -106,6 +124,7 @@ def play():
             
         if(player.is_collision(mobs[i]) == True):
             player.update_hp(-MOB_PLAYER_COLLISION_DAMAGE)
+            PLAYER_HURT_SOUND.play()
         
     for i in range(0, len(boss_bullets)):
         if(player.is_collision(boss_bullets[i]) == True):
@@ -197,7 +216,23 @@ def game_over_screen():
     global running
 
     WINDOW_SCREEN.fill(WHITE)
-    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/2, MAP_HEIGHT/2), "LOMSER :(", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/2, 60), "GAME OVER :(", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , 120), "LOMSER!!! ;(  ", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , 150), "PREMSS SPACE TO QUIMT!", (0, 0, 0))
+
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10  , MAP_HEIGHT/4), "CREDITS:  ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10  , MAP_HEIGHT/4 + 30), "MUSIC ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 3), "BACKGROUND MUSIC: \"Monkeys Spinning Monkeys\" by KevinMacLeod", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 4), "MENU MUSIC: \"Fluffing a Duck\" by KevinMacLeod", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 5), "SHORT SOUNDS: Made by Me (Zuzozuo) and my Cousin (Maciej Chowan) ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 7), "IMAGES: ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 8), "Every image was found on open source sites", (0, 0, 0))
+
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 9), "DISCLAIMER: I hereby declare that I do not own the rights to this music). ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 10), " or images (except sounds I made with my cousin). ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 11), "All rights belong to the owners and creators. ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 12), "No Copyright Infringement Intended. ", (0, 0, 0))
+    
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -232,12 +267,21 @@ def game_win_screen():
     pygame.display.flip()
 
 # --------------------------------Game Loop------------------------------------------------------
-while running:
 
+while running:
     if game_state == GAME_START: 
+        if play_menu_music:
+            pygame.mixer.Channel(0).play(MENU_MUSIC, -1)
+            play_menu_music = False
         start_screen()
 
     elif game_state == GAME_PLAYING:
+        if pygame.mixer.Channel(0).get_busy() == True:
+            pygame.mixer.Channel(0).stop()
+
+        if play_background_music:
+            pygame.mixer.Channel(1).play(BACKGROUND_MUSIC, -1)
+            play_background_music = False
         play()        
     
     elif game_state == GAME_OVER:

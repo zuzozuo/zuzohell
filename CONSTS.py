@@ -66,7 +66,9 @@ PLAYER_BULLET_SOUND = pygame.mixer.Sound('Sounds/shoot1_sound.mp3')
 PLAYER_DEATH_SOUND = pygame.mixer.Sound('Sounds/youlose2_sound.mp3')
 GAME_OVER_SOUND = pygame.mixer.Sound('Sounds/youlose1_sound.mp3')
 GAME_WIN_SOUND = pygame.mixer.Sound('Sounds/win_sound.wav')
-PLAYER_DAMAGE_SOUND = pygame.mixer.Sound('Sounds/gethurt_sound.mp3')
+PLAYER_HURT_SOUND = pygame.mixer.Sound('Sounds/gethurt_sound.mp3')
+BACKGROUND_MUSIC = pygame.mixer.Sound('Sounds/background_music_2.mp3')
+MENU_MUSIC = pygame.mixer.Sound('Sounds/menu_music_2.mp3')
 
 PLAYER_BOSS_DAMAGE = 0.15
 PLAYER_MOB_DAMAGE=  0.70
