@@ -71,7 +71,6 @@ class Player(Entity):
             # HANDLING EVENTS
 
     def display(self, surface):
-
         #pygame.draw.circle(surface, WHITE, (self.x, self.y) , self.radius, 0)
         WINDOW_SCREEN.blit(self.image, (self.x-self.radius, self.y-self.radius))
 

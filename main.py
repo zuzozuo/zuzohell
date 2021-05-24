@@ -174,7 +174,7 @@ def play():
             boss_phase = False
             boss = None
             player.update_score(KILL_BOSS_SCORE)
-            player.update_kill_count
+            player.update_kill_count()
             
             if(boss_counter == BOSS_NUMBER):
                 game_state = GAME_WIN
