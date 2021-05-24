@@ -1,4 +1,3 @@
-
 import pygame
 import pygame.freetype 
 from CONSTS import *
@@ -69,7 +68,7 @@ def play():
     WINDOW_SCREEN.fill(WHITE)    
 
     if player.spawn_bullet == True:
-        add_bullets(player.x, player.y, 0, WINDOW_SCREEN)
+        add_bullets(player.x, player.y)
         PLAYER_BULLET_SOUND.play()
         player.spawn_bullet = False
 
@@ -90,31 +89,33 @@ def play():
             mobs[i].attack()
 
             if(mobs[i].spawn_bullet == True):
-                add_mob_bullets(mobs[i].x, mobs[i].y, 0, WINDOW_SCREEN)    
+                add_mob_bullets(mobs[i].x + mobs[i].radius, mobs[i].y + mobs[i].radius)    
                 mobs[i].spawn_bullet = False    
             mobs[i].can_attack = False
 
         for j in range(0, len(bullets)):
-            if(bullets[j].is_collision(mobs[i]) == True):    
-                player.score += 1
-                mobs[i].hp -= PLAYER_MOB_DAMAGE
+            if(bullets[j].is_collision(mobs[i]) == True):
+                mobs[i].update_hp(-PLAYER_MOB_DAMAGE)
+                player.update_score(HIT_MOB_SCORE)    
+
                 if(mobs[i].hp <= 0):
                     mobs[i].death()
+                    player.update_score(KILL_MOB_SCORE)
+                    player.update_kill_count()
                 bullets[j].death()
             
         if(player.is_collision(mobs[i]) == True):
-            player.hp -= MOB_PLAYER_COLLISION_DAMAGE
-            continue
+            player.update_hp(-MOB_PLAYER_COLLISION_DAMAGE)
         
     for i in range(0, len(boss_bullets)):
         if(player.is_collision(boss_bullets[i]) == True):
-            player.hp -= BOSS_PLAYER_DAMAGE
+            player.update_hp(-BOSS_PLAYER_DAMAGE)
             boss_bullets[i].death()
     
     #####WAITING FOR BOSS###############
 
     if(boss is None):
-        if ((player.score % mobs_to_kill == 0 and player.score > 0) or boss_phase) :
+        if ((player.kill_count % mobs_to_kill == 0 and player.score > 0) or boss_phase) :
             mobs_to_spawn = 0   
             boss_phase = True
         if(not mobs and not mob_bullets):
@@ -122,11 +123,10 @@ def play():
             boss.init()
             BOSS_APPEARS_SOUND.play()
     ######################################
-    
     for i in range(0, len(mob_bullets)):
         if(player.is_collision(mob_bullets[i])):
             mob_bullets[i].is_dead = True
-            player.hp -= MOB_PLAYER_DAMAGE
+            player.update_hp(-MOB_PLAYER_DAMAGE)
     
     if player.hp <= 0: 
         player.death()
@@ -158,13 +158,14 @@ def play():
 
         for i in range(0, len(bullets)):
             if(boss.is_collision(bullets[i]) == True):
-                boss.hp -= PLAYER_BOSS_DAMAGE
-                player.score += 1
+                boss.update_hp(-PLAYER_BOSS_DAMAGE)
+                player.update_score(HIT_BOSS_SCORE)
                 bullets[i].death()
     
         if boss.hp <= 0:
             boss.death()
             boss_counter +=1
+
 
         boss.update()
         boss.display(WINDOW_SCREEN)
@@ -172,7 +173,9 @@ def play():
         if(boss.is_dead):
             boss_phase = False
             boss = None
-
+            player.update_score(KILL_BOSS_SCORE)
+            player.update_kill_count
+            
             if(boss_counter == BOSS_NUMBER):
                 game_state = GAME_WIN
 
@@ -181,7 +184,6 @@ def play():
     
     loop_over(boss_bullets, WINDOW_SCREEN)
     
-
     pygame.draw.rect(MAP_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
     GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, INFO_FONT_SIZE), "Your score: " + str(round(player.score, 2)), (255, 255, 255))
     GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, INFO_FONT_SIZE * 2), "Your hp: " + str(points_to_percent(player.hp, PLAYER_MAX_HP)) + "%", (255, 255, 255))
@@ -216,6 +218,7 @@ def game_win_screen():
     WINDOW_SCREEN.fill(WHITE)
     GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/2, MAP_HEIGHT/2), "WIMNER!!!!", (0, 0, 0))
     GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/2, MAP_HEIGHT/2 + INFO_FONT_SIZE), "Your score: " + str(player.score), (0, 0, 0))
+    GAME_WIN_SOUND.play()
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:

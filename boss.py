@@ -1,6 +1,7 @@
 import random
 from entity import Entity
 from CONSTS import *
+import pygame.mixer
 
 class Boss(Entity):
     def __init__(self, x, y):
@@ -28,7 +29,6 @@ class Boss(Entity):
         if self.hp < 0:
             self.hp = 0
     
-
     def check_border(self):
         # LEFT
         if self.x <= self.radius + 10:
@@ -55,8 +55,8 @@ class Boss(Entity):
         BOSS_DEATH_SOUND.play()        
 
     def display(self, surface):
-        pygame.draw.circle(surface, YELLOW, (self.x, self.y) , self.radius, 0)
-        MAP_SCREEN.blit(self.image, (self.x-self.radius, self.y-self.radius))
+        pygame.draw.circle(surface, WHITE, (self.x, self.y) , self.radius, 0)
+        WINDOW_SCREEN.blit(self.image, (self.x-self.radius, self.y-self.radius))
 
     def cooldown(self):
         now = pygame.time.get_ticks()  #spawn delay

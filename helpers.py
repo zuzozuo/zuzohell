@@ -8,28 +8,25 @@ import pygame
 import pygame.mixer
 import pygame.freetype
 
-def init_game():
-    pass
-
-def reset_game():
-    pass
-
 def add_mob():
     mob = Mob(random.randint(0,int(MAP_WIDTH/30)) * 30, WORLD_CEILING - 30)
     mob.init()
-    FEAR_SOUND.play()
     mobs.append(mob)
 
-def add_bullets(x, y, angle, surface):
+def add_bullets(x, y):
     bullet = Bullet(x, y)
+    bullet.image = pygame.transform.scale(BULLET_PLAYER_IMAGE.convert(), (2 * bullet.radius, 2 * bullet.radius))
+    bullet.transColor = BULLET_PLAYER_IMAGE.get_at((0,0))
+    bullet.image.set_colorkey(bullet.transColor)
     bullets.append(bullet)
 
 
-def add_mob_bullets(x,y, angle, surface):
+def add_mob_bullets(x,y):
 
     angle = random.random() - 0.5
     bullet = Bullet(x, y)
-    bullet.velocity = pygame.Vector2(0, BASIC_BULLET_SPEED).rotate_rad(angle)
+    velocity_y = random.random() * (MAX_BULLET_SPEED - MIN_BULLET_SPEED + 1) + MIN_BULLET_SPEED
+    bullet.velocity = pygame.Vector2(0, velocity_y).rotate_rad(angle)
     bullet.color = IDK_COLOR
     mob_bullets.append(bullet)
 
@@ -44,12 +41,12 @@ def add_boss_bullets(x, y, radius, sequence_number, bullets_number):
         bullet.color = RED
 
         if sequence_number == 0:
-            bullet.velocity = pygame.Vector2(0, BASIC_BULLET_SPEED).rotate_rad(-1 * step * i )
+            bullet.velocity = pygame.Vector2(0, MIN_BULLET_SPEED).rotate_rad(-1 * step * i )
 
         if sequence_number == 1:
             angle = random.random() - 0.5
             bullet.velocity = pygame.Vector2(0,0)
-            bullet.velocity = pygame.Vector2(0, BASIC_BULLET_SPEED).rotate_rad(angle)
+            bullet.velocity = pygame.Vector2(0, MIN_BULLET_SPEED).rotate_rad(angle)
 
         if sequence_number == 2:
             bullet.velocity = pygame.Vector2(0, random.randint(2,5)).rotate_rad(1 * step * i )

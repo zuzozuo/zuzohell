@@ -1,5 +1,5 @@
 import pygame
-
+import pygame.mixer
 from entity import Entity
 from CONSTS import *
 from entities import *
@@ -9,12 +9,14 @@ class Bullet(Entity):
         super().__init__(x, y)
         self.radius = 6
         self.color = BLUE
-        self.power = 0
         self.velocity = pygame.Vector2(0,-4) 
+
+        self.image = None
+        self.transColor = None
 
     def display(self, surface):
         pygame.draw.circle(surface, self.color, (self.x, self.y) , self.radius, 0)
-
+        #WINDOW_SCREEN.blit(self.image, (self.x-self.radius, self.y-self.radius))
     # HANDLING EVENTS
 
     def check_border(self):

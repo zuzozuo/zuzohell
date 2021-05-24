@@ -1,6 +1,7 @@
 from entity import Entity
 import pygame
 from CONSTS import *
+import pygame.mixer
 
 
 class Player(Entity):
@@ -15,20 +16,16 @@ class Player(Entity):
         self.x = x
         self.y = y
         self.is_player = True
+        self.kill_count = 0
 
         self.image = pygame.transform.scale(PLAYER_IMAGE.convert(), (2 * self.display_radius, 2 * self.display_radius))
         self.transColor = PLAYER_IMAGE.get_at((0,0))
         self.image.set_colorkey(self.transColor)
-
     
     def update(self):
         super().update()
         if self.hp < 0:
             self.hp = 0
-    
-
-    def bonus(self):  # gain bonus after collecting items
-        pass
 
     def death(self):
         super().death()
@@ -75,8 +72,8 @@ class Player(Entity):
 
     def display(self, surface):
 
-        pygame.draw.circle(surface, YELLOW, (self.x, self.y) , self.radius, 0)
-        MAP_SCREEN.blit(self.image, (self.x-self.radius, self.y-self.radius))
+        #pygame.draw.circle(surface, WHITE, (self.x, self.y) , self.radius, 0)
+        WINDOW_SCREEN.blit(self.image, (self.x-self.radius, self.y-self.radius))
 
     def cooldown(self):
         pass
@@ -86,4 +83,10 @@ class Player(Entity):
         if(now - self.last_update > 70):
             self.last_update = now
             self.spawn_bullet = True
+    
+    def update_score(self, count):
+        self.score += count
+
+    def update_kill_count(self):
+        self.kill_count +=1
 

@@ -20,8 +20,8 @@ WHITE = (255, 255, 255)
 IDK_COLOR = (100, 23, 50)
 FPS = 60
 
-BASIC_BULLET_SPEED = 2
-SLOWDOWN = 0.2
+MIN_BULLET_SPEED = 2.5
+MAX_BULLET_SPEED = 4.5
 
 #later it will depend on difficulty level
 SPAWN_TIME_MIN =  20
@@ -33,7 +33,8 @@ SPEED_MAX = 1
 #IMAGES
 
 PLAYER_IMAGE = pygame.image.load('img/player.png')
-MOB_IMAGE = pygame.image.load('img/mob5.png')
+BULLET_PLAYER_IMAGE = pygame.image.load('img/player_bullet.png')
+MOB_IMAGE = pygame.image.load('img/mob2.png')
 BOSS_IMAGE = pygame.image.load('img/boss.png')
 
 MAP_SCREEN = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
@@ -48,14 +49,14 @@ GAME_OVER = 3
 GAME_WIN = 4
 
 #
-MIN_NUMBER_TO_KILL = 5 #HOW MANY SHOULD YOU KILL TO MAKE THE BOSS APPEAR
-MAX_NUMBER_TO_KILL = 6
+MIN_NUMBER_TO_KILL = 1 #HOW MANY SHOULD YOU KILL TO MAKE THE BOSS APPEAR
+MAX_NUMBER_TO_KILL = 3
 
-MIN_MOBS_NUMBER = 5 #HOW MANY MOBS AT ONE TIME CAN BE SUMMONED
-MAX_MOB_NUMBER = 6
+MIN_MOBS_NUMBER = 1 #HOW MANY MOBS AT ONE TIME CAN BE SUMMONED
+MAX_MOB_NUMBER = 3
 
-MIN_BOSS_BULLETS_NUMBER = 10
-MAX_BOSS_BULLETS_NUMBER = 20
+MIN_BOSS_BULLETS_NUMBER = 15
+MAX_BOSS_BULLETS_NUMBER = 25
 #SOUNDS
 FEAR_SOUND = pygame.mixer.Sound('Sounds/projekt.mp3')
 LOSE_SOUND = pygame.mixer.Sound('Sounds/youlose2_sound.mp3')
@@ -64,11 +65,13 @@ BOSS_APPEARS_SOUND = pygame.mixer.Sound('Sounds/weewee_sound.mp3')
 PLAYER_BULLET_SOUND = pygame.mixer.Sound('Sounds/shoot1_sound.mp3')
 PLAYER_DEATH_SOUND = pygame.mixer.Sound('Sounds/youlose2_sound.mp3')
 GAME_OVER_SOUND = pygame.mixer.Sound('Sounds/youlose1_sound.mp3')
+GAME_WIN_SOUND = pygame.mixer.Sound('Sounds/win_sound.wav')
+PLAYER_DAMAGE_SOUND = pygame.mixer.Sound('Sounds/gethurt_sound.mp3')
 
-PLAYER_BOSS_DAMAGE = 0.5
-PLAYER_MOB_DAMAGE=  0.75
+PLAYER_BOSS_DAMAGE = 0.15
+PLAYER_MOB_DAMAGE=  0.70
 MOB_PLAYER_DAMAGE = 0.4
-BOSS_PLAYER_DAMAGE = 0.9
+BOSS_PLAYER_DAMAGE = 0.75
 MOB_PLAYER_COLLISION_DAMAGE = 0.00000000062
 
 #FONTS
@@ -84,9 +87,14 @@ PLAYER_MAX_HP = 10
 BOSS_MAX_HP = 10
 
 #HEALTH BARS
-
 HEALTH_BAR_WIDTH = 100
 HEALTH_BAR_HEIGHT = 20
+
+#SCORES
+KILL_MOB_SCORE = 1
+KILL_BOSS_SCORE = 2
+HIT_MOB_SCORE = 0.45
+HIT_BOSS_SCORE = 0.15
 
 
 
