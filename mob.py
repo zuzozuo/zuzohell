@@ -25,7 +25,7 @@ class Mob(Entity, pygame.sprite.Sprite):
 
     def display(self, surface):     
         #pygame.draw.circle(surface, WHITE, (self.x, self.y) , self.radius, 0)
-        MAP_SCREEN.blit(self.image, (self.x-self.radius, self.y-self.radius))
+        WINDOW_SCREEN.blit(self.image, (self.x-self.radius, self.y-self.radius))
 
     def attack(self):
         now = pygame.time.get_ticks()  #spawn delay

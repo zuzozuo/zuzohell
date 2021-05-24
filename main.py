@@ -6,6 +6,7 @@ from entities import *
 from boss import Boss
 from helpers import *
 # ------------------------------------
+print(pygame.font.get_fonts())
 mobs_to_spawn = random.randint(MIN_MOBS_NUMBER, MAX_MOB_NUMBER) 
 INIT_MOBS_NUMBER = mobs_to_spawn #need to remeber this value
 mobs_to_kill = random.randint(MIN_NUMBER_TO_KILL, MAX_NUMBER_TO_KILL)
@@ -18,6 +19,7 @@ pygame.init()
 TITLE_FONT = pygame.freetype.Font("fonts/slkscr.ttf", 30)
 GAME_FONT = pygame.freetype.Font("fonts/slkscr.ttf", 24)
 INFO_FONT = pygame.freetype.Font("fonts/slkscr.ttf", 12)
+
 clock = pygame.time.Clock()
 
 pygame.display.set_caption("Zuzohell")
@@ -26,11 +28,19 @@ pygame.display.set_icon(icon)
 pygame.mixer.set_num_channels(100)
 pygame.mixer.set_reserved(0)
 pygame.mixer.set_reserved(1)
+pygame.mixer.set_reserved(2)
+pygame.mixer.set_reserved(3)
 pygame.mixer.Sound.set_volume(BACKGROUND_MUSIC, 0.3)
-pygame.mixer.Sound.set_volume(MENU_MUSIC, 0.3)
+pygame.mixer.Sound.set_volume(PLAYER_DEATH_SOUND, 1.2)
+pygame.mixer.Sound.set_volume(PLAYER_HURT_SOUND, 0.3)
+pygame.mixer.Sound.set_volume(BOSS_DEATH_SOUND, 0.5)
+pygame.mixer.Sound.set_volume(BOSS_APPEARS_SOUND, 0.5)
+pygame.mixer.Sound.set_volume(PLAYER_BULLET_SOUND, 0.1)
+pygame.mixer.Sound.set_volume(GAME_WIN_SOUND, 0.3)
+pygame.mixer.Sound.set_volume(GAME_WIN_MUSIC, 0.2)
 
-play_menu_music = True
-play_background_music = True
+
+play_music = True
 # spawn player
 player = Player(MAP_WIDTH / 2, MAP_HEIGHT * 0.98)
 running = True       
@@ -62,7 +72,7 @@ def start_screen():
         if event.type == pygame.QUIT:
             running = False
 
-    pygame.draw.rect(MAP_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
+    pygame.draw.rect(WINDOW_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
     pygame.display.update()
     pygame.display.flip()
 #-----------------------------------------------------------------------------------------------
@@ -156,7 +166,7 @@ def play():
     
     player.move()
     player.update()
-    player.display(MAP_SCREEN)
+    player.display(WINDOW_SCREEN)
 
     if(boss_phase and not (boss is None)):
         boss.cooldown()
@@ -203,7 +213,7 @@ def play():
     
     loop_over(boss_bullets, WINDOW_SCREEN)
     
-    pygame.draw.rect(MAP_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
+    pygame.draw.rect(WINDOW_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
     GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, INFO_FONT_SIZE), "Your score: " + str(round(player.score, 2)), (255, 255, 255))
     GAME_FONT.render_to(WINDOW_SCREEN, (WINDOW_WIDTH - WINDOW_OFFSET, INFO_FONT_SIZE * 2), "Your hp: " + str(points_to_percent(player.hp, PLAYER_MAX_HP)) + "%", (255, 255, 255))
     if(not(boss is None)):        
@@ -241,7 +251,7 @@ def game_over_screen():
         if event.type == pygame.QUIT:
             running = False
             
-    pygame.draw.rect(MAP_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
+    pygame.draw.rect(WINDOW_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
     pygame.display.update()
     pygame.display.flip()
 
@@ -251,9 +261,8 @@ def game_win_screen():
     global running
 
     WINDOW_SCREEN.fill(WHITE)
-    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/2, MAP_HEIGHT/2), "WIMNER!!!!", (0, 0, 0))
-    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/2, MAP_HEIGHT/2 + INFO_FONT_SIZE), "Your score: " + str(player.score), (0, 0, 0))
-    GAME_WIN_SOUND.play()
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10, 20), "WIMNER!!!!", (0, 0, 0))
+    GAME_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10, 20 + INFO_FONT_SIZE), "Your score: " + str(round(player.score, 2)), (0, 0, 0))
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -261,8 +270,21 @@ def game_win_screen():
                 running = False
         if event.type == pygame.QUIT:
             running = False
-            
-    pygame.draw.rect(MAP_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
+    
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10  , MAP_HEIGHT/4), "CREDITS:  ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10  , MAP_HEIGHT/4 + 30), "MUSIC ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 3), "BACKGROUND MUSIC: \"Monkeys Spinning Monkeys\" by KevinMacLeod", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 4), "MENU MUSIC: \"Fluffing a Duck\" by KevinMacLeod", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 5), "SHORT SOUNDS: Made by Me (Zuzozuo) and my Cousin (Maciej Chowan) ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 7), "IMAGES: ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 8), "Every image was found on open source sites", (0, 0, 0))
+
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 9), "DISCLAIMER: I hereby declare that I do not own the rights to this music). ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 10), " or images (except sounds I made with my cousin). ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 11), "All rights belong to the owners and creators. ", (0, 0, 0))
+    INFO_FONT.render_to(WINDOW_SCREEN, (MAP_WIDTH/10 , MAP_HEIGHT/4 + 30 * 12), "No Copyright Infringement Intended. ", (0, 0, 0))
+
+    pygame.draw.rect(WINDOW_SCREEN, BLACK, pygame.Rect(WINDOW_WIDTH - WINDOW_OFFSET, 0 , WINDOW_WIDTH - MAP_WIDTH , WINDOW_HEIGHT))
     pygame.display.update()
     pygame.display.flip()
 
@@ -270,24 +292,47 @@ def game_win_screen():
 
 while running:
     if game_state == GAME_START: 
-        if play_menu_music:
-            pygame.mixer.Channel(0).play(MENU_MUSIC, -1)
-            play_menu_music = False
         start_screen()
 
+        if play_music:
+            pygame.mixer.Channel(0).play(MENU_MUSIC, -1)
+            pygame.mixer.Sound.set_volume(MENU_MUSIC, 0.1)
+            play_music = False
+
     elif game_state == GAME_PLAYING:
+        play()
+
         if pygame.mixer.Channel(0).get_busy() == True:
             pygame.mixer.Channel(0).stop()
+            play_music = True
 
-        if play_background_music:
+        if play_music:
             pygame.mixer.Channel(1).play(BACKGROUND_MUSIC, -1)
-            play_background_music = False
-        play()        
+            play_music = False
     
     elif game_state == GAME_OVER:
         game_over_screen()
-    
+
+        if pygame.mixer.Channel(1).get_busy() == True:
+            pygame.mixer.Channel(1).stop()
+            play_music = True
+
+        if play_music:
+            pygame.mixer.Channel(2).play(GAME_OVER_MUSIC, -1)
+            pygame.mixer.Sound.set_volume(GAME_OVER_MUSIC, 0.05)
+            play_music = False
+
     elif game_state == GAME_WIN:
         game_win_screen()
 
+        if pygame.mixer.Channel(1).get_busy() == True:
+            pygame.mixer.Channel(1).stop()
+            
+            play_music = True
+
+        if play_music:
+            pygame.mixer.Channel(3).play(GAME_WIN_SOUND, 0)
+            pygame.mixer.Channel(4).play(GAME_WIN_MUSIC, -1)
+            play_music = False
+        
 pygame.quit()
