@@ -24,6 +24,11 @@ IDK_COLOR = (100, 23, 50)
 MIN_BULLET_SPEED = 2.5
 MAX_BULLET_SPEED = 4.5
 
+DEFAULT_BULLET_RADIUS = 7
+PLAYER_RADIUS = 30
+BOSS_RADIUS = 60
+MOB_RADIUS = 25
+
 #later it will depend on difficulty level
 SPAWN_TIME_MIN =  20
 SPAWN_TIME_MAX = 100
@@ -68,8 +73,12 @@ GAME_WIN = 4
 
 PLAYER_IMAGE = pygame.image.load('img/player.png')
 BULLET_PLAYER_IMAGE = pygame.image.load('img/player_bullet.png')
+BULLET_IMAGE_BLUE = pygame.image.load('img/bullet3.png')
+BULLET_IMAGE_ORANGE = pygame.image.load('img/bullet5.png')
+BULLET_IMAGE_GREEN = pygame.image.load('img/bullet4.png')
 MOB_IMAGE = pygame.image.load('img/mob2.png')
 BOSS_IMAGE = pygame.image.load('img/boss.png')
+ALL_BULLETS = [BULLET_IMAGE_BLUE, BULLET_IMAGE_GREEN, BULLET_IMAGE_ORANGE]
 
 #SOUNDS
 FEAR_SOUND = pygame.mixer.Sound('Sounds/projekt.mp3')

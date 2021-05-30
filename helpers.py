@@ -29,8 +29,8 @@ def add_mob():
     mobs.append(mob)
 
 def add_bullets(x, y):
-    bullet = Bullet(x, y)
-    bullet.image = pygame.transform.scale(BULLET_PLAYER_IMAGE.convert(), (2 * bullet.radius, 2 * bullet.radius))
+    bullet = Bullet(x, y, DEFAULT_BULLET_RADIUS)
+    bullet.image = pygame.transform.scale(BULLET_PLAYER_IMAGE.convert(), (bullet.display_radius, bullet.display_radius))
     bullet.transColor = BULLET_PLAYER_IMAGE.get_at((0,0))
     bullet.image.set_colorkey(bullet.transColor)
     bullets.append(bullet)
@@ -39,7 +39,7 @@ def add_bullets(x, y):
 def add_mob_bullets(x,y):
 
     angle = random.random() - 0.5
-    bullet = Bullet(x, y)
+    bullet = Bullet(x, y, DEFAULT_BULLET_RADIUS)
     velocity_y = random.random() * (MAX_BULLET_SPEED - MIN_BULLET_SPEED + 1) + MIN_BULLET_SPEED
     bullet.velocity = pygame.Vector2(0, velocity_y).rotate_rad(angle)
     bullet.color = IDK_COLOR
@@ -52,24 +52,34 @@ def add_boss_bullets(x, y, radius, sequence_number, bullets_number):
     for i in range(0, bullets_number):
         x_spawn = x + math.sin(step * i) * radius
         y_spawn = y + math.cos(step * i) * radius
-        bullet = Bullet(x_spawn, y_spawn)
-        bullet.color = RED
+        velocity = pygame.Vector2(0,0)
+        radius = DEFAULT_BULLET_RADIUS  
+        img = ALL_BULLETS[random.randint(1,len(ALL_BULLETS)-1)]      
 
         if sequence_number == 0:
-            bullet.velocity = pygame.Vector2(0, MIN_BULLET_SPEED).rotate_rad(-1 * step * i )
+            velocity = pygame.Vector2(0, MIN_BULLET_SPEED).rotate_rad(-1 * step * i )
 
         if sequence_number == 1:
-            angle = random.random() - 0.5
-            bullet.velocity = pygame.Vector2(0,0)
-            bullet.velocity = pygame.Vector2(0, MIN_BULLET_SPEED).rotate_rad(angle)
+            speed = random.random() * (MAX_BULLET_SPEED - MIN_BULLET_SPEED + 1) + MIN_BULLET_SPEED
+            sign = random_sign()
+            #angle = random.random() - 0.5
+            radius = random.randint(6, 10)
+            velocity = pygame.Vector2(0, speed).rotate_rad(sign * step * i )
 
         if sequence_number == 2:
-            bullet.velocity = pygame.Vector2(0, random.randint(2,5)).rotate_rad(1 * step * i )
+            velocity = pygame.Vector2(0, random.randint(2,5)).rotate_rad(1 * step * i )
 
         if sequence_number == 3:
-            bullet.velocity = pygame.Vector2(0, random.randint(2,4)).rotate_rad(-1 * step * i )
-            bullet.radius = random.randint(6, 10)
+            velocity = pygame.Vector2(0, random.randint(2,4)).rotate_rad(-1 * step * i )
+            radius = random.randint(6, 10)
         
+        bullet = Bullet(x_spawn, y_spawn, radius)
+        bullet.velocity = velocity
+        bullet.radius = radius
+        bullet.image = pygame.transform.scale(img.convert(), (bullet.display_radius, bullet.display_radius))
+        bullet.transColor = img.get_at((0,0))
+        bullet.image.set_colorkey(bullet.transColor)
+        bullet.color = RED        
         boss_bullets.append(bullet)
 
 
@@ -85,5 +95,12 @@ def loop_over(objects, surface):
         if ent.is_dead:
             objects.remove(ent)
         ent.display(surface)
+
+def random_sign():
+    if random.random() < 0.5:
+        return 1
+    else:
+        return -1
+
 
 

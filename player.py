@@ -7,8 +7,8 @@ import pygame.mixer
 class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.radius = 30
-        self.display_radius = 35
+        self.radius = PLAYER_RADIUS
+        self.display_radius = PLAYER_RADIUS + 5
         self.hp = PLAYER_MAX_HP
         self.score = 0
         self.speed = 3
@@ -86,9 +86,9 @@ class Player(Entity):
     def update_score(self, count):
         self.score += count
 
-    def update_hp(self, count):
+    def update_hp(self, count,sound):
         super().update_hp(count)
-        if count < 0:
+        if count < 0 and sound:
             PLAYER_HURT_SOUND.play()
 
     def update_kill_count(self):

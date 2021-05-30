@@ -6,5 +6,4 @@
 pip install pygame
 
 ####TODO
-Collisions
 Acceleration

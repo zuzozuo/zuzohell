@@ -6,7 +6,7 @@ import pygame.mixer
 class Boss(Entity):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.radius = 60
+        self.radius = BOSS_RADIUS
         self.hp = BOSS_MAX_HP
         self.can_attack = True
         self.bullet_break = pygame.time.get_ticks()

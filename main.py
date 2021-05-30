@@ -117,12 +117,12 @@ def play():
                 bullets[j].death()
             
         if(player.is_collision(mobs[i]) == True):
-            player.update_hp(-MOB_PLAYER_COLLISION_DAMAGE)
+            player.update_hp(-MOB_PLAYER_COLLISION_DAMAGE, False)
             #PLAYER_HURT_SOUND.play()
         
     for i in range(0, len(boss_bullets)):
         if(player.is_collision(boss_bullets[i]) == True):
-            player.update_hp(-BOSS_PLAYER_DAMAGE)
+            player.update_hp(-BOSS_PLAYER_DAMAGE, True)
             boss_bullets[i].death()
     
     #####WAITING FOR BOSS###############
@@ -131,7 +131,7 @@ def play():
         if ((player.kill_count % mobs_to_kill == 0 and player.score > 0) or boss_phase) :
             mobs_to_spawn = 0   
             boss_phase = True
-        if(not mobs and not mob_bullets):
+        if(not mobs and len(mob_bullets) <= 5):
             boss = Boss(MAP_WIDTH/2, 0 - 60) #start boss position TODO
             boss.init()
             BOSS_APPEARS_SOUND.play()
@@ -139,7 +139,7 @@ def play():
     for i in range(0, len(mob_bullets)):
         if(player.is_collision(mob_bullets[i])):
             mob_bullets[i].is_dead = True
-            player.update_hp(-MOB_PLAYER_DAMAGE)
+            player.update_hp(-MOB_PLAYER_DAMAGE, True)
     
     if player.hp <= 0: 
         player.death()
@@ -316,3 +316,6 @@ while running:
             play_music = False
         
 pygame.quit()
+
+
+ 

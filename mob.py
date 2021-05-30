@@ -7,7 +7,7 @@ import pygame.mixer
 class Mob(Entity, pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__(x,y)
-        self.radius = 25
+        self.radius = MOB_RADIUS
         self.hp = 3
         self.speed = 0
         self.can_attack = True
