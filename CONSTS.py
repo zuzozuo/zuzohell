@@ -29,6 +29,8 @@ PLAYER_RADIUS = 30
 BOSS_RADIUS = 60
 MOB_RADIUS = 25
 
+PLAYER_SPEED = 3
+
 #later it will depend on difficulty level
 SPAWN_TIME_MIN =  20
 SPAWN_TIME_MAX = 100

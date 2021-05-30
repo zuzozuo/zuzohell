@@ -29,17 +29,14 @@ def add_mob():
     mobs.append(mob)
 
 def add_bullets(x, y):
-    bullet = Bullet(x, y, DEFAULT_BULLET_RADIUS)
-    bullet.image = pygame.transform.scale(BULLET_PLAYER_IMAGE.convert(), (bullet.display_radius, bullet.display_radius))
-    bullet.transColor = BULLET_PLAYER_IMAGE.get_at((0,0))
-    bullet.image.set_colorkey(bullet.transColor)
+    bullet = Bullet(x, y, DEFAULT_BULLET_RADIUS, BULLET_PLAYER_IMAGE)
     bullets.append(bullet)
 
 
 def add_mob_bullets(x,y):
 
     angle = random.random() - 0.5
-    bullet = Bullet(x, y, DEFAULT_BULLET_RADIUS)
+    bullet = Bullet(x, y, DEFAULT_BULLET_RADIUS, BULLET_IMAGE_BLUE)
     velocity_y = random.random() * (MAX_BULLET_SPEED - MIN_BULLET_SPEED + 1) + MIN_BULLET_SPEED
     bullet.velocity = pygame.Vector2(0, velocity_y).rotate_rad(angle)
     bullet.color = IDK_COLOR
@@ -73,12 +70,9 @@ def add_boss_bullets(x, y, radius, sequence_number, bullets_number):
             velocity = pygame.Vector2(0, random.randint(2,4)).rotate_rad(-1 * step * i )
             radius = random.randint(6, 10)
         
-        bullet = Bullet(x_spawn, y_spawn, radius)
+        bullet = Bullet(x_spawn, y_spawn, radius, img)
         bullet.velocity = velocity
         bullet.radius = radius
-        bullet.image = pygame.transform.scale(img.convert(), (bullet.display_radius, bullet.display_radius))
-        bullet.transColor = img.get_at((0,0))
-        bullet.image.set_colorkey(bullet.transColor)
         bullet.color = RED        
         boss_bullets.append(bullet)
 

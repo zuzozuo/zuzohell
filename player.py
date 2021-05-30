@@ -11,7 +11,7 @@ class Player(Entity):
         self.display_radius = PLAYER_RADIUS + 5
         self.hp = PLAYER_MAX_HP
         self.score = 0
-        self.speed = 3
+        self.speed = PLAYER_SPEED
         self.fire = False
         self.x = x
         self.y = y
