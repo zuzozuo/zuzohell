@@ -14,6 +14,7 @@ class Boss(Entity):
         self.is_boss = True
         self.attack_type = 0 
         self.bullet_number = 0
+        self.cooldown_time = random.randint(150, 300)
 
         self.image = pygame.transform.scale(BOSS_IMAGE.convert(), (2 * self.radius, 2 * self.radius))
         self.transColor = BOSS_IMAGE.get_at((0,0))
@@ -66,7 +67,7 @@ class Boss(Entity):
     
     def attack(self):
         now = pygame.time.get_ticks()  #spawn delay
-        if(now - self.last_update > 200):
+        if(now - self.last_update > self.cooldown_time):
             self.last_update = now
             self.spawn_bullet = True
 

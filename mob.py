@@ -16,6 +16,7 @@ class Mob(Entity, pygame.sprite.Sprite):
         self.image = pygame.transform.scale(MOB_IMAGE.convert(), (2 * self.radius + 10, 2 * self.radius + 10))
         self.transColor = MOB_IMAGE.get_at((0,0))
         self.image.set_colorkey(self.transColor)
+        self.colldown_time = random.randint(1000,2000)
     
     def init(self):
         self.speed = random.random() * (SPEED_MAX - SPEED_MIN + 1) + SPEED_MIN
@@ -35,7 +36,7 @@ class Mob(Entity, pygame.sprite.Sprite):
     
     def cooldown(self): #wait for spawning group of bullets
         now = pygame.time.get_ticks()  #spawn delay
-        if(now - self.bullet_break > 1000):
+        if(now - self.bullet_break > self.colldown_time):
             self.bullet_break = now
             self.can_attack = True
 
