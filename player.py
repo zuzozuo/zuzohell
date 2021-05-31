@@ -79,7 +79,7 @@ class Player(Entity):
 
     def attack(self):
         now = pygame.time.get_ticks()  #bullet spawn delay
-        if(now - self.last_update > 70):
+        if(now - self.last_update > 100):
             self.last_update = now
             self.spawn_bullet = True
     

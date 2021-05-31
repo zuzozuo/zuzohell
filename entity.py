@@ -28,6 +28,9 @@ class Entity:
     def display(self, surface):  # any entity display
         pass
 
+    def check_border(self):
+        pass
+
     # handling events
     def death(self):
         self.is_dead = True
