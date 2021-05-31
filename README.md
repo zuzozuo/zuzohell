@@ -6,9 +6,3 @@
 ### Packages to install - pygame, and of course Python3 if you don't have it
 pip install pygame
 
-#### TODO
-Acceleration
-Diffrent boss images 
-Cooldowns on mob spawning, and random bullet cooldown (boss)
-Clear code
-Bonus for player??
