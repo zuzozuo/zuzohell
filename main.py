@@ -9,7 +9,6 @@ from helpers import *
 mobs_to_spawn = random.randint(MIN_MOBS_NUMBER, MAX_MOB_NUMBER) 
 mobs_to_kill = random.randint(MIN_NUMBER_TO_KILL, MAX_NUMBER_TO_KILL)
 INIT_MOBS_NUMBER = mobs_to_spawn #need to remeber this value
-print(INIT_MOBS_NUMBER)
 game_state = GAME_START
 boss_phase = False
 boss_wait = False
@@ -127,10 +126,6 @@ def play():
     #####WAITING FOR BOSS###############
 
     if(boss is None):
-        print("======")
-        print(player.kill_count)
-        print(mobs_to_kill)
-        print("======")
         if ((player.kill_count > 0 and player.kill_count % mobs_to_kill == 0 and player.score > 0) or boss_phase) :
             mobs_to_spawn = 0   
             boss_phase = True
